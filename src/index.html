@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-950 text-slate-100">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>USMC Ball Seat Finder</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            gold: {
+              300: '#fde047',
+              400: '#facc15',
+              500: '#eab308',
+              600: '#ca8a04',
+            },
+            navy: {
+              800: '#0f172a',
+              900: '#0b1120',
+              950: '#050811',
+            }
+          },
+          fontFamily: {
+            serif: ['Playfair Display', 'Georgia', 'serif'],
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts & Lucide Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    .glass-card {
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+  </style>
+</head>
+<body class="h-full flex flex-col font-sans antialiased bg-navy-950 text-slate-100 selection:bg-gold-500 selection:text-navy-950">
+
+  <!-- ========================================================================= -->
+  <!-- EDIT YOUR GUEST LIST HERE (Easily updateable inline JSON)                -->
+  <!-- ========================================================================= -->
+  <script id="guest-data" type="application/json">
+  [
+    { "id": "1", "name": "Alexander Hamilton", "table": "1", "tableName": "Table 1 - Head Table", "seat": "Seat 1", "notes": "Speaker" },
+    { "id": "2", "name": "Eliza Schuyler", "table": "1", "tableName": "Table 1 - Head Table", "seat": "Seat 2", "notes": "VIP" },
+    { "id": "3", "name": "Thomas Jefferson", "table": "1", "tableName": "Table 1 - Head Table", "seat": "Seat 3", "notes": "Guest of Honor" },
+    { "id": "4", "name": "James Madison", "table": "1", "tableName": "Table 1 - Head Table", "seat": "Seat 4", "notes": "" },
+    { "id": "5", "name": "George Washington", "table": "2", "tableName": "Table 2 - Emerald Suite", "seat": "Seat 1", "notes": "Keynote Speaker" },
+    { "id": "6", "name": "Martha Washington", "table": "2", "tableName": "Table 2 - Emerald Suite", "seat": "Seat 2", "notes": "VIP" },
+    { "id": "7", "name": "Benjamin Franklin", "table": "2", "tableName": "Table 2 - Emerald Suite", "seat": "Seat 3", "notes": "Dietary: Vegetarian" },
+    { "id": "8", "name": "John Adams", "table": "3", "tableName": "Table 3 - Diamond Garden", "seat": "Seat 1", "notes": "" },
+    { "id": "9", "name": "Abigail Adams", "table": "3", "tableName": "Table 3 - Diamond Garden", "seat": "Seat 2", "notes": "" },
+    { "id": "10", "name": "John Jay", "table": "3", "tableName": "Table 3 - Diamond Garden", "seat": "Seat 3", "notes": "" },
+    { "id": "11", "name": "Aaron Burr", "table": "4", "tableName": "Table 4 - Sapphire Lounge", "seat": "Seat 1", "notes": "Stage Right" },
+    { "id": "12", "name": "Marquis de Lafayette", "table": "4", "tableName": "Table 4 - Sapphire Lounge", "seat": "Seat 2", "notes": "International Guest" },
+    { "id": "13", "name": "Hercules Mulligan", "table": "4", "tableName": "Table 4 - Sapphire Lounge", "seat": "Seat 3", "notes": "" },
+    { "id": "14", "name": "John Laurens", "table": "4", "tableName": "Table 4 - Sapphire Lounge", "seat": "Seat 4", "notes": "" },
+    { "id": "15", "name": "Angelica Schuyler", "table": "5", "tableName": "Table 5 - Ruby Courtyard", "seat": "Seat 1", "notes": "VIP" },
+    { "id": "16", "name": "Peggy Schuyler", "table": "5", "tableName": "Table 5 - Ruby Courtyard", "seat": "Seat 2", "notes": "" },
+    { "id": "17", "name": "Scooby Doo", "table": "6", "tableName": "Table 6 - The Gang", "seat": "Seat 1", "notes": ""}
+  ]
+  </script>
+
+  <!-- HEADER -->
+  <header class="sticky top-0 z-40 bg-navy-900/90 backdrop-blur-md border-b border-slate-800/80 px-4 lg:px-8 py-4">
+    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-3 w-full sm:w-auto justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center text-navy-950 shadow-lg font-bold text-xl">
+            <i data-lucide="sparkles" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h1 class="font-serif text-xl sm:text-2xl font-bold tracking-tight text-slate-100">3d Battalion, 11th Marines</h1>
+            <p class="text-xs text-slate-400 flex items-center gap-1">
+              <i data-lucide="map-pin" class="w-3 h-3 text-gold-400"></i> The Plaza, Las Vegas, NV
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3 w-full sm:w-auto justify-end">
+        <!-- View Toggle Buttons -->
+        <div class="bg-slate-900 p-1 rounded-lg border border-slate-800 flex items-center gap-1">
+          <button id="viewBtnTable" onclick="setDisplayMode('table')" class="px-3 py-1.5 text-xs font-semibold rounded-md transition-all flex items-center gap-1.5 bg-gold-500 text-navy-950 shadow">
+            <i data-lucide="layout-grid" class="w-3.5 h-3.5"></i> By Table
+          </button>
+          <button id="viewBtnAlpha" onclick="setDisplayMode('alpha')" class="px-3 py-1.5 text-xs font-medium rounded-md text-slate-400 hover:text-slate-200 transition-all flex items-center gap-1.5">
+            <i data-lucide="list" class="w-3.5 h-3.5"></i> A–Z Directory
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="flex-1 max-w-6xl w-full mx-auto px-4 lg:px-8 py-6 space-y-6">
+
+    <!-- SEARCH & STATUS BAR -->
+    <section class="glass-card rounded-2xl p-6 shadow-xl border border-slate-800">
+      <div class="max-w-xl mx-auto space-y-3 text-center">
+        <label for="searchInput" class="block font-serif text-2xl font-bold text-slate-100">Find Your Seat!</label>
+        
+        <div class="relative">
+          <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
+            <i data-lucide="search" class="w-5 h-5"></i>
+          </div>
+          <input 
+            type="text" 
+            id="searchInput"
+            oninput="handleSearchInput(this.value)"
+            placeholder="Type guest name, table, or seat..."
+            class="w-full pl-12 pr-20 py-3.5 bg-navy-900 border border-slate-700 focus:border-gold-500 rounded-xl text-slate-100 placeholder-slate-500 text-base focus:outline-none focus:ring-2 focus:ring-gold-500/20 transition-all shadow-inner"
+            autocomplete="off"
+          />
+          <button 
+            id="clearBtn" 
+            onclick="clearSearch()" 
+            class="hidden absolute inset-y-2 right-2 px-3 text-xs font-semibold rounded-lg bg-slate-800 text-slate-400 hover:text-white transition-all flex items-center gap-1"
+          >
+            <i data-lucide="x" class="w-3.5 h-3.5"></i> Clear
+          </button>
+        </div>
+
+        <div id="statusCounter" class="text-xs text-slate-400 font-medium pt-1">
+          Loading guests...
+        </div>
+      </div>
+    </section>
+
+    <!-- ERROR STATE -->
+    <div id="errorState" class="hidden glass-card rounded-2xl p-8 border border-red-500/30 bg-red-950/20 my-6">
+      <div class="flex items-start gap-4">
+        <div class="w-10 h-10 rounded-xl bg-red-500/20 text-red-400 flex items-center justify-center shrink-0">
+          <i data-lucide="alert-triangle" class="w-5 h-5"></i>
+        </div>
+        <div class="space-y-3 flex-1">
+          <h3 class="text-lg font-bold text-red-200">Failed to load seating data</h3>
+          <p class="text-slate-300 text-xs leading-relaxed">
+            There was a JSON syntax error in the inline <code class="text-gold-400 font-mono">&lt;script id="guest-data"&gt;</code> element. Please ensure proper JSON formatting (closing quotes, commas, and square brackets).
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- EMPTY STATE -->
+    <div id="emptyState" class="hidden glass-card rounded-2xl p-12 text-center my-6">
+      <i data-lucide="user-x" class="w-10 h-10 text-slate-500 mx-auto mb-3"></i>
+      <h3 class="text-lg font-semibold text-slate-200">No Guests Found</h3>
+      <p class="text-slate-400 text-xs mt-1">Check the spelling or search for a table number.</p>
+      <button onclick="clearSearch()" class="mt-4 px-4 py-2 bg-gold-500 text-navy-950 text-xs font-bold rounded-lg hover:bg-gold-400">Clear Search</button>
+    </div>
+
+    <!-- DISPLAY AREA -->
+    <div id="contentContainer"></div>
+
+  </main>
+
+  <script>
+    let guestData = [];
+    let searchQuery = "";
+    let displayMode = "table"; // 'table' or 'alpha'
+
+    window.addEventListener("DOMContentLoaded", () => {
+      loadInlineGuestData();
+      readUrlHash();
+      render();
+    });
+
+    window.addEventListener("hashchange", () => {
+      readUrlHash();
+      render();
+    });
+
+    function loadInlineGuestData() {
+      const errorEl = document.getElementById("errorState");
+      try {
+        const rawJson = document.getElementById("guest-data").textContent;
+        guestData = JSON.parse(rawJson);
+        
+        if (!Array.isArray(guestData)) {
+          throw new Error("JSON structure must be an array of guests.");
+        }
+        errorEl.classList.add("hidden");
+      } catch (err) {
+        console.error("Error parsing inline guest JSON:", err);
+        errorEl.classList.remove("hidden");
+        document.getElementById("statusCounter").textContent = "Data formatting error";
+      }
+    }
+
+    function readUrlHash() {
+      const hash = window.location.hash.substring(1);
+      if (!hash) return;
+
+      const params = new URLSearchParams(hash);
+      if (params.has("search")) {
+        searchQuery = params.get("search");
+      } else if (params.has("table")) {
+        searchQuery = params.get("table");
+      }
+      
+      if (searchQuery) {
+        document.getElementById("searchInput").value = searchQuery;
+        document.getElementById("clearBtn").classList.remove("hidden");
+      }
+    }
+
+    function updateUrlHash() {
+      if (searchQuery) {
+        window.location.hash = `search=${encodeURIComponent(searchQuery)}`;
+      } else {
+        history.replaceState(null, null, ' ');
+      }
+    }
+
+    function handleSearchInput(val) {
+      searchQuery = val.trim();
+      document.getElementById("clearBtn").classList.toggle("hidden", searchQuery === "");
+      updateUrlHash();
+      render();
+    }
+
+    function clearSearch() {
+      searchQuery = "";
+      document.getElementById("searchInput").value = "";
+      document.getElementById("clearBtn").classList.add("hidden");
+      updateUrlHash();
+      render();
+    }
+
+    function setDisplayMode(mode) {
+      displayMode = mode;
+      const btnTable = document.getElementById("viewBtnTable");
+      const btnAlpha = document.getElementById("viewBtnAlpha");
+
+      if (mode === "table") {
+        btnTable.className = "px-3 py-1.5 text-xs font-semibold rounded-md transition-all flex items-center gap-1.5 bg-gold-500 text-navy-950 shadow";
+        btnAlpha.className = "px-3 py-1.5 text-xs font-medium rounded-md text-slate-400 hover:text-slate-200 transition-all flex items-center gap-1.5";
+      } else {
+        btnAlpha.className = "px-3 py-1.5 text-xs font-semibold rounded-md transition-all flex items-center gap-1.5 bg-gold-500 text-navy-950 shadow";
+        btnTable.className = "px-3 py-1.5 text-xs font-medium rounded-md text-slate-400 hover:text-slate-200 transition-all flex items-center gap-1.5";
+      }
+      render();
+    }
+
+    function getFilteredGuests() {
+      const q = searchQuery.toLowerCase();
+      if (!q) return guestData;
+
+      return guestData.filter(g => 
+        (g.name && g.name.toLowerCase().includes(q)) ||
+        (g.table && String(g.table).toLowerCase().includes(q)) ||
+        (g.tableName && g.tableName.toLowerCase().includes(q)) ||
+        (g.seat && g.seat.toLowerCase().includes(q)) ||
+        (g.notes && g.notes.toLowerCase().includes(q))
+      );
+    }
+
+    function highlightText(text, query) {
+      if (!text) return "";
+      if (!query) return text;
+      const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+      return String(text).replace(regex, `<mark class="bg-gold-500/40 text-gold-200 px-0.5 rounded">$1</mark>`);
+    }
+
+    function render() {
+      if (!guestData || guestData.length === 0) return;
+
+      const guests = getFilteredGuests();
+      document.getElementById("statusCounter").innerHTML = `Showing <span class="text-gold-400 font-bold">${guests.length}</span> of <span>${guestData.length}</span> guests`;
+
+      const container = document.getElementById("contentContainer");
+      const emptyState = document.getElementById("emptyState");
+
+      if (guests.length === 0) {
+        container.innerHTML = "";
+        emptyState.classList.remove("hidden");
+        return;
+      } else {
+        emptyState.classList.add("hidden");
+      }
+
+      if (displayMode === "table") {
+        renderTableView(guests, container);
+      } else {
+        renderAlphaView(guests, container);
+      }
+
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function renderTableView(guests, container) {
+      const tableGroups = {};
+      
+      // Collect table titles
+      guestData.forEach(g => {
+        const title = g.tableName || `Table ${g.table}`;
+        if (!tableGroups[title]) tableGroups[title] = [];
+      });
+
+      // Group matching guests
+      guests.forEach(g => {
+        const title = g.tableName || `Table ${g.table}`;
+        if (tableGroups[title]) tableGroups[title].push(g);
+      });
+
+      let html = `<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">`;
+
+      Object.keys(tableGroups).forEach(tableName => {
+        const tableGuests = tableGroups[tableName];
+        if (searchQuery && tableGuests.length === 0) return;
+
+        html += `
+          <div class="glass-card rounded-xl p-5 border border-slate-800 transition-all">
+            <div class="flex items-center gap-3 pb-3 mb-3 border-b border-slate-800/80">
+              <div class="w-8 h-8 rounded-lg bg-slate-800 border border-slate-700 text-gold-400 font-serif font-bold text-sm flex items-center justify-center shrink-0">
+                <i data-lucide="utensils" class="w-4 h-4"></i>
+              </div>
+              <div class="flex-1 min-w-0">
+                <h3 class="font-serif font-bold text-slate-100 text-base truncate">${tableName}</h3>
+                <span class="text-[11px] text-slate-400">${tableGuests.length} Guests Seated</span>
+              </div>
+            </div>
+
+            <div class="space-y-1.5">
+              ${tableGuests.map(g => {
+                const isMatch = searchQuery && (
+                  (g.name && g.name.toLowerCase().includes(searchQuery.toLowerCase())) ||
+                  (g.notes && g.notes.toLowerCase().includes(searchQuery.toLowerCase()))
+                );
+                return `
+                  <div class="p-2 rounded-lg flex items-center justify-between text-xs ${isMatch ? 'bg-gold-500/20 border border-gold-500/40 text-slate-100 font-semibold' : 'text-slate-300 hover:bg-slate-800/40'}">
+                    <div class="flex flex-col min-w-0 pr-2">
+                      <span class="truncate">${highlightText(g.name, searchQuery)}</span>
+                      ${g.notes ? `<span class="text-[10px] text-slate-400 truncate">${highlightText(g.notes, searchQuery)}</span>` : ''}
+                    </div>
+                    <span class="px-2 py-0.5 bg-slate-800/80 text-slate-400 font-mono text-[11px] rounded border border-slate-700/50 shrink-0">${g.seat || 'Assigned'}</span>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          </div>
+        `;
+      });
+
+      html += `</div>`;
+      container.innerHTML = html;
+    }
+
+    function renderAlphaView(guests, container) {
+      const sorted = [...guests].sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+
+      let html = `
+        <div class="glass-card rounded-xl overflow-hidden border border-slate-800">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs text-slate-300">
+              <thead class="bg-slate-900/80 uppercase text-[10px] text-slate-400 tracking-wider font-semibold border-b border-slate-800">
+                <tr>
+                  <th class="py-3 px-4">Guest Name</th>
+                  <th class="py-3 px-4">Assigned Table</th>
+                  <th class="py-3 px-4">Seat</th>
+                  <th class="py-3 px-4 text-right">Notes</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-800/60">
+                ${sorted.map(g => {
+                  const isMatch = searchQuery && (
+                    (g.name && g.name.toLowerCase().includes(searchQuery.toLowerCase())) ||
+                    (g.tableName && g.tableName.toLowerCase().includes(searchQuery.toLowerCase())) ||
+                    (g.table && String(g.table).toLowerCase().includes(searchQuery.toLowerCase()))
+                  );
+                  const tableTitle = g.tableName || `Table ${g.table}`;
+                  return `
+                    <tr class="transition-colors ${isMatch ? 'bg-gold-500/10 font-semibold text-slate-100' : 'hover:bg-slate-800/30'}">
+                      <td class="py-3 px-4 font-medium">${highlightText(g.name, searchQuery)}</td>
+                      <td class="py-3 px-4 text-gold-400">${highlightText(tableTitle, searchQuery)}</td>
+                      <td class="py-3 px-4 font-mono text-slate-400">${g.seat || 'Assigned'}</td>
+                      <td class="py-3 px-4 text-right text-slate-400 text-[11px]">${highlightText(g.notes || '-', searchQuery)}</td>
+                    </tr>
+                  `;
+                }).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+
+      container.innerHTML = html;
+    }
+  </script>
+</body>
+</html>
