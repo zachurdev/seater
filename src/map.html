@@ -32,7 +32,7 @@
       position: relative;
     }
 
-    /* Top Header with Return Button Only */
+    /* Top Floating Header */
     header {
       position: absolute;
       top: 0;
@@ -54,15 +54,15 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      background: rgba(33, 38, 45, 0.9);
-      border: 1px solid rgba(240, 246, 252, 0.2);
+      background: rgba(33, 38, 45, 0.95);
+      border: 1px solid rgba(240, 246, 252, 0.25);
       color: #58a6ff;
-      padding: 10px 14px;
+      padding: 10px 16px;
       border-radius: 20px;
       font-size: 14px;
       font-weight: 600;
       text-decoration: none;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
       transition: background 0.2s, transform 0.1s;
@@ -74,7 +74,7 @@
       background: rgba(48, 54, 61, 1);
     }
 
-    /* Interactive Canvas Viewport */
+    /* Canvas Viewport */
     #viewport {
       flex: 1;
       width: 100%;
@@ -111,13 +111,13 @@
 
     .orient-text {
       fill: #c9d1d9;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 600;
       text-anchor: middle;
       dominant-baseline: middle;
     }
 
-    /* Table Node Styling (Circles without chairs) */
+    /* Table Node Styling */
     .table-group {
       cursor: pointer;
     }
@@ -131,7 +131,7 @@
 
     .table-number {
       fill: #f3f4f6;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 700;
       text-anchor: middle;
       dominant-baseline: central;
@@ -247,30 +247,31 @@
 
     <!-- Interactive SVG Canvas Viewport -->
     <div id="viewport">
-      <svg id="map-svg" viewBox="0 0 1000 460">
+      <svg id="map-svg" viewBox="0 0 500 900">
         <g id="map-transform-group">
-          <!-- Clean Normal Rectangle Room Border -->
-          <rect class="room-border" x="50" y="30" width="900" height="410" rx="8" />
+          <!-- Room Border (Portrait Orientation) -->
+          <rect class="room-border" x="25" y="40" width="450" height="840" rx="8" />
 
-          <!-- Orienting Marks: Screens, Stage, Dance Floor Only -->
+          <!-- Orienting Marks along the RIGHT Wall -->
           <g id="orientation-markers">
-            <!-- Top Projection Screens -->
-            <rect class="orient-bg" x="280" y="45" width="75" height="25" rx="3" />
-            <text class="orient-text" x="317.5" y="57.5" font-size="11">Screen</text>
+            <!-- Top Screen (Right Wall, Upper) -->
+            <rect class="orient-bg" x="438" y="100" width="22" height="75" rx="3" />
+            <text class="orient-text" x="449" y="137.5" font-size="10" transform="rotate(90 449 137.5)">Screen</text>
 
-            <rect class="orient-bg" x="750" y="45" width="75" height="25" rx="3" />
-            <text class="orient-text" x="787.5" y="57.5" font-size="11">Screen</text>
+            <!-- Bottom Screen (Right Wall, Lower) -->
+            <rect class="orient-bg" x="438" y="700" width="22" height="75" rx="3" />
+            <text class="orient-text" x="449" y="737.5" font-size="10" transform="rotate(90 449 737.5)">Screen</text>
 
-            <!-- 8x24 Stage -->
-            <rect class="orient-bg" x="430" y="75" width="140" height="45" rx="3" />
-            <text class="orient-text" x="500" y="97.5">8x24 Stage</text>
+            <!-- Stage (Right Wall, Center Top) -->
+            <rect class="orient-bg" x="390" y="320" width="40" height="140" rx="3" />
+            <text class="orient-text" x="410" y="390" transform="rotate(90 410 390)">8x24 Stage</text>
 
-            <!-- 20x20 Dance Floor -->
-            <rect class="orient-bg" x="420" y="130" width="160" height="150" rx="4" />
-            <text class="orient-text" x="500" y="195">20x20 Dance Floor</text>
+            <!-- Dance Floor (Right Wall, Center Bottom) -->
+            <rect class="orient-bg" x="252" y="310" width="130" height="160" rx="4" />
+            <text class="orient-text" x="317" y="390" transform="rotate(90 317 390)">Dance Floor</text>
           </g>
 
-          <!-- Dynamic Tables Container -->
+          <!-- Dynamic Tables Layer -->
           <g id="tables-layer"></g>
         </g>
       </svg>
@@ -294,24 +295,37 @@
     const RETURN_TO_SEARCH_URL = "https://example.com/search";
     document.getElementById('return-button').href = RETURN_TO_SEARCH_URL;
 
-    // Table Positions (60 Tables Layout)
+    /* 
+      Rotated 90° Clockwise Sequential Ordering:
+      - Column 1 (x = 350, right-most near stage): 1-6 (Top Block) -> DANCE FLOOR GAP -> 7-12 (Bottom Block)
+      - Column 2 (x = 290): 13-18 (Top Block) -> DANCE FLOOR GAP -> 19-24 (Bottom Block)
+      - Column 3 (x = 230): 25-30 (Top Block) -> DANCE FLOOR GAP -> 31-36 (Bottom Block)
+      - Column 4 (x = 170): 37-42 (Top Block) -> DANCE FLOOR GAP -> 43-48 (Bottom Block)
+      - Column 5 (x = 110): 49-54 (Top Block) -> DANCE FLOOR GAP -> 55-60 (Bottom Block)
+    */
     const tablePositions = [
-      // Left Side Blocks (Columns 1 to 6)
-      { id: 1, x: 170, y: 120 }, { id: 2, x: 220, y: 120 }, { id: 3, x: 270, y: 120 }, { id: 4, x: 320, y: 120 }, { id: 5, x: 370, y: 120 }, { id: 6, x: 420, y: 120 },
-      { id: 7, x: 170, y: 180 }, { id: 8, x: 220, y: 180 }, { id: 9, x: 270, y: 180 }, { id: 10, x: 320, y: 180 }, { id: 17, x: 370, y: 180 }, { id: 18, x: 420, y: 180 },
-      { id: 25, x: 170, y: 240 }, { id: 26, x: 220, y: 240 }, { id: 27, x: 270, y: 240 }, { id: 28, x: 320, y: 240 }, { id: 29, x: 370, y: 240 }, { id: 30, x: 420, y: 240 },
-      { id: 37, x: 170, y: 300 }, { id: 38, x: 220, y: 300 }, { id: 39, x: 270, y: 300 }, { id: 40, x: 320, y: 300 }, { id: 41, x: 370, y: 300 }, { id: 42, x: 420, y: 300 },
-      { id: 49, x: 170, y: 360 }, { id: 50, x: 220, y: 360 }, { id: 51, x: 270, y: 360 }, { id: 52, x: 320, y: 360 }, { id: 53, x: 370, y: 360 }, { id: 54, x: 420, y: 360 },
+      // Column 1 (x = 350)
+      { id: 1, x: 350, y: 120 }, { id: 2, x: 350, y: 170 }, { id: 3, x: 350, y: 220 }, { id: 4, x: 350, y: 270 }, { id: 5, x: 350, y: 320 }, { id: 6, x: 350, y: 370 },
+      { id: 7, x: 350, y: 550 }, { id: 8, x: 350, y: 600 }, { id: 9, x: 350, y: 650 }, { id: 10, x: 350, y: 700 }, { id: 11, x: 350, y: 750 }, { id: 12, x: 350, y: 800 },
 
-      // Right Side Blocks (Columns 7 to 12)
-      { id: 11, x: 610, y: 120 }, { id: 12, x: 660, y: 120 }, { id: 13, x: 710, y: 120 }, { id: 14, x: 760, y: 120 }, { id: 15, x: 810, y: 120 }, { id: 16, x: 860, y: 120 },
-      { id: 19, x: 610, y: 180 }, { id: 20, x: 660, y: 180 }, { id: 21, x: 710, y: 180 }, { id: 22, x: 760, y: 180 }, { id: 23, x: 810, y: 180 }, { id: 24, x: 860, y: 180 },
-      { id: 31, x: 610, y: 240 }, { id: 32, x: 660, y: 240 }, { id: 33, x: 710, y: 240 }, { id: 34, x: 760, y: 240 }, { id: 35, x: 810, y: 240 }, { id: 36, x: 860, y: 240 },
-      { id: 43, x: 610, y: 300 }, { id: 44, x: 660, y: 300 }, { id: 45, x: 710, y: 300 }, { id: 46, x: 760, y: 300 }, { id: 47, x: 810, y: 300 }, { id: 48, x: 860, y: 300 },
-      { id: 55, x: 610, y: 360 }, { id: 56, x: 660, y: 360 }, { id: 57, x: 710, y: 360 }, { id: 58, x: 760, y: 360 }, { id: 59, x: 810, y: 360 }, { id: 60, x: 860, y: 360 }
+      // Column 2 (x = 290)
+      { id: 13, x: 290, y: 120 }, { id: 14, x: 290, y: 170 }, { id: 15, x: 290, y: 220 }, { id: 16, x: 290, y: 270 }, { id: 17, x: 290, y: 320 }, { id: 18, x: 290, y: 370 },
+      { id: 19, x: 290, y: 550 }, { id: 20, x: 290, y: 600 }, { id: 21, x: 290, y: 650 }, { id: 22, x: 290, y: 700 }, { id: 23, x: 290, y: 750 }, { id: 24, x: 290, y: 800 },
+
+      // Column 3 (x = 230)
+      { id: 25, x: 230, y: 120 }, { id: 26, x: 230, y: 170 }, { id: 27, x: 230, y: 220 }, { id: 28, x: 230, y: 270 }, { id: 29, x: 230, y: 320 }, { id: 30, x: 230, y: 370 },
+      { id: 31, x: 230, y: 550 }, { id: 32, x: 230, y: 600 }, { id: 33, x: 230, y: 650 }, { id: 34, x: 230, y: 700 }, { id: 35, x: 230, y: 750 }, { id: 36, x: 230, y: 800 },
+
+      // Column 4 (x = 170)
+      { id: 37, x: 170, y: 120 }, { id: 38, x: 170, y: 170 }, { id: 39, x: 170, y: 220 }, { id: 40, x: 170, y: 270 }, { id: 41, x: 170, y: 320 }, { id: 42, x: 170, y: 370 },
+      { id: 43, x: 170, y: 550 }, { id: 44, x: 170, y: 600 }, { id: 45, x: 170, y: 650 }, { id: 46, x: 170, y: 700 }, { id: 47, x: 170, y: 750 }, { id: 48, x: 170, y: 800 },
+
+      // Column 5 (x = 110)
+      { id: 49, x: 110, y: 120 }, { id: 50, x: 110, y: 170 }, { id: 51, x: 110, y: 220 }, { id: 52, x: 110, y: 270 }, { id: 53, x: 110, y: 320 }, { id: 54, x: 110, y: 370 },
+      { id: 55, x: 110, y: 550 }, { id: 56, x: 110, y: 600 }, { id: 57, x: 110, y: 650 }, { id: 58, x: 110, y: 700 }, { id: 59, x: 110, y: 750 }, { id: 60, x: 110, y: 800 }
     ];
 
-    // Render Simplified Tables (Single Circle without chairs)
+    // Render Tables
     const tablesLayer = document.getElementById('tables-layer');
 
     tablePositions.forEach(table => {
@@ -321,7 +335,7 @@
 
       g.innerHTML = `
         <circle class="pulse-ring" cx="${table.x}" cy="${table.y}" r="22" />
-        <circle class="table-circle" cx="${table.x}" cy="${table.y}" r="18" />
+        <circle class="table-circle" cx="${table.x}" cy="${table.y}" r="17" />
         <text class="table-number" x="${table.x}" y="${table.y}">${table.id}</text>
       `;
 
@@ -329,9 +343,11 @@
       tablesLayer.appendChild(g);
     });
 
-    // Pan & Zoom Engine with 95% Width Default Fit
+    // Viewport & Scaling Engine
     const viewport = document.getElementById('viewport');
     const transformGroup = document.getElementById('map-transform-group');
+    const VB_WIDTH = 500;
+    const VB_HEIGHT = 900;
 
     let scale = 1;
     let pointX = 0;
@@ -346,17 +362,21 @@
 
     function resetView() {
       const rect = viewport.getBoundingClientRect();
-      // Configure initial scaling to consume 95% of the viewing width automatically
-      scale = (rect.width * 0.95) / 1000;
-      pointX = (rect.width - (1000 * scale)) / 2;
-      pointY = 16; // Slight top offset below header
+      const scaleX = rect.width / VB_WIDTH;
+      const scaleY = rect.height / VB_HEIGHT;
+      
+      // Auto-fit diagram to fill maximum vertical screen space
+      scale = Math.min(scaleX, scaleY) * 0.98;
+      
+      pointX = (rect.width - (VB_WIDTH * scale)) / 2;
+      pointY = (rect.height - (VB_HEIGHT * scale)) / 2 + 10;
       setTransform();
     }
 
     window.addEventListener('resize', resetView);
     resetView();
 
-    // Touch & Pointer Drag
+    // Touch / Pointer Drag
     viewport.addEventListener('pointerdown', (e) => {
       if (e.target.closest('header')) return;
       isPanning = true;
@@ -408,7 +428,7 @@
       initialPinchDist = null;
     });
 
-    // Table Selection & Zoom Focus
+    // Table Selection & Focus Zoom
     let selectedId = null;
     const sheet = document.getElementById('bottom-sheet');
     const sheetTitle = document.getElementById('sheet-title');
@@ -427,7 +447,7 @@
         if (el) el.classList.add('selected');
 
         const rect = viewport.getBoundingClientRect();
-        scale = 1.8;
+        scale = 1.6;
         pointX = (rect.width / 2) - (target.x * scale);
         pointY = (rect.height / 2) - (target.y * scale);
         setTransform();
