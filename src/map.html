@@ -23,7 +23,6 @@
       color: #f0f6fc;
     }
 
-    /* Fixed App Layout */
     #app {
       display: flex;
       flex-direction: column;
@@ -33,7 +32,7 @@
       position: relative;
     }
 
-    /* Top Floating Controls Header */
+    /* Top Header with Return Button Only */
     header {
       position: absolute;
       top: 0;
@@ -42,7 +41,6 @@
       z-index: 100;
       padding: 12px 16px;
       display: flex;
-      gap: 10px;
       align-items: center;
       background: linear-gradient(180deg, rgba(13,17,23,0.95) 0%, rgba(13,17,23,0.8) 75%, rgba(13,17,23,0) 100%);
       pointer-events: none;
@@ -52,7 +50,6 @@
       pointer-events: auto;
     }
 
-    /* Return to Search Button */
     .btn-return {
       display: inline-flex;
       align-items: center;
@@ -75,41 +72,6 @@
     .btn-return:active {
       transform: scale(0.96);
       background: rgba(48, 54, 61, 1);
-    }
-
-    /* Table Search Input */
-    .search-box {
-      flex: 1;
-      position: relative;
-      display: flex;
-      align-items: center;
-    }
-
-    .search-box input {
-      width: 100%;
-      background: rgba(22, 27, 34, 0.9);
-      border: 1px solid rgba(240, 246, 252, 0.2);
-      border-radius: 20px;
-      padding: 10px 14px 10px 36px;
-      color: #ffffff;
-      font-size: 14px;
-      outline: none;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-    }
-
-    .search-box input::placeholder {
-      color: #8b949e;
-    }
-
-    .search-icon {
-      position: absolute;
-      left: 12px;
-      width: 16px;
-      height: 16px;
-      fill: #8b949e;
-      pointer-events: none;
     }
 
     /* Interactive Canvas Viewport */
@@ -135,7 +97,6 @@
       will-change: transform;
     }
 
-    /* Map SVG Styling */
     .room-border {
       fill: #161b22;
       stroke: #30363d;
@@ -156,30 +117,16 @@
       dominant-baseline: middle;
     }
 
-    .orient-subtext {
-      fill: #8b949e;
-      font-size: 11px;
-      text-anchor: middle;
-      dominant-baseline: middle;
-    }
-
-    /* Table Node Styling */
+    /* Table Node Styling (Circles without chairs) */
     .table-group {
       cursor: pointer;
-      transition: transform 0.15s ease;
     }
 
     .table-circle {
       fill: #1f2937;
       stroke: #4b5563;
       stroke-width: 2;
-      transition: fill 0.2s, stroke 0.2s, stroke-width 0.2s;
-    }
-
-    .table-chair {
-      fill: #374151;
-      stroke: #1f2937;
-      stroke-width: 1;
+      transition: fill 0.2s, stroke 0.2s;
     }
 
     .table-number {
@@ -191,7 +138,6 @@
       pointer-events: none;
     }
 
-    /* Selected Table Highlight Animation */
     .table-group.selected .table-circle {
       fill: #1e3a8a;
       stroke: #60a5fa;
@@ -225,40 +171,6 @@
         opacity: 0;
         stroke-width: 1px;
       }
-    }
-
-    /* Zoom Controls Floating Buttons */
-    .zoom-controls {
-      position: absolute;
-      right: 16px;
-      bottom: 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      z-index: 90;
-    }
-
-    .zoom-btn {
-      width: 44px;
-      height: 44px;
-      border-radius: 22px;
-      background: rgba(33, 38, 45, 0.9);
-      border: 1px solid rgba(240, 246, 252, 0.2);
-      color: #f0f6fc;
-      font-size: 20px;
-      font-weight: bold;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      cursor: pointer;
-    }
-
-    .zoom-btn:active {
-      transform: scale(0.92);
-      background: #30363d;
     }
 
     /* Touch Bottom Sheet Modal */
@@ -331,28 +243,16 @@
         </svg>
         Return to Search
       </a>
-
-      <div class="search-box">
-        <svg class="search-icon" viewBox="0 0 24 24">
-          <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
-        </svg>
-        <input type="number" id="table-search" placeholder="Find Table #" pattern="[0-9]*" inputmode="numeric">
-      </div>
     </header>
 
     <!-- Interactive SVG Canvas Viewport -->
     <div id="viewport">
-      <svg id="map-svg" viewBox="0 0 1000 900">
+      <svg id="map-svg" viewBox="0 0 1000 460">
         <g id="map-transform-group">
-          <!-- Outer Room Outline -->
-          <path class="room-border" d="
-            M 50,40 
-            L 280,40 L 280,30 L 370,30 L 370,40 L 610,40 L 610,30 L 830,30 L 830,40 L 950,40
-            L 950,220 L 965,220 L 965,480 L 950,480 L 950,700 L 870,780 L 810,850 L 720,850 
-            L 670,820 L 590,820 L 540,860 L 460,860 L 410,810 L 350,880 L 280,880 L 220,810
-            L 120,810 L 50,730 L 80,680 L 50,650 L 90,520 L 50,500 L 90,380 L 50,350 L 90,200 L 50,180 Z" />
+          <!-- Clean Normal Rectangle Room Border -->
+          <rect class="room-border" x="50" y="30" width="900" height="410" rx="8" />
 
-          <!-- Orienting Marks: Screens, Stage, Dance Floor, Bars -->
+          <!-- Orienting Marks: Screens, Stage, Dance Floor Only -->
           <g id="orientation-markers">
             <!-- Top Projection Screens -->
             <rect class="orient-bg" x="280" y="45" width="75" height="25" rx="3" />
@@ -368,44 +268,12 @@
             <!-- 20x20 Dance Floor -->
             <rect class="orient-bg" x="420" y="130" width="160" height="150" rx="4" />
             <text class="orient-text" x="500" y="195">20x20 Dance Floor</text>
-
-            <!-- Bars -->
-            <!-- Bottom Left Bars -->
-            <g transform="translate(190, 770)">
-              <polygon points="0,0 24,0 20,20 4,20" class="orient-bg" />
-              <text class="orient-subtext" x="12" y="10" fill="#f87171" font-weight="bold">Bar</text>
-            </g>
-            <g transform="translate(260, 770)">
-              <polygon points="0,0 24,0 20,20 4,20" class="orient-bg" />
-              <text class="orient-subtext" x="12" y="10" fill="#f87171" font-weight="bold">Bar</text>
-            </g>
-            <g transform="translate(330, 770)">
-              <polygon points="0,0 24,0 20,20 4,20" class="orient-bg" />
-              <text class="orient-subtext" x="12" y="10" fill="#f87171" font-weight="bold">Bar</text>
-            </g>
-
-            <!-- Bottom Right Bars -->
-            <g transform="translate(800, 780) rotate(-35)">
-              <polygon points="0,0 28,0 24,18 4,18" class="orient-bg" />
-              <text class="orient-subtext" x="14" y="9" fill="#f87171" font-weight="bold">Bar</text>
-            </g>
-            <g transform="translate(850, 730) rotate(-35)">
-              <polygon points="0,0 28,0 24,18 4,18" class="orient-bg" />
-              <text class="orient-subtext" x="14" y="9" fill="#f87171" font-weight="bold">Bar</text>
-            </g>
           </g>
 
           <!-- Dynamic Tables Container -->
           <g id="tables-layer"></g>
         </g>
       </svg>
-    </div>
-
-    <!-- Zoom Controls -->
-    <div class="zoom-controls">
-      <button class="zoom-btn" id="btn-zoom-in">+</button>
-      <button class="zoom-btn" id="btn-zoom-out">−</button>
-      <button class="zoom-btn" id="btn-zoom-reset" style="font-size:12px;">RESET</button>
     </div>
 
     <!-- Touch Bottom Sheet Info Card -->
@@ -424,8 +292,6 @@
   <script>
     // Configurable Return-to-Search URL
     const RETURN_TO_SEARCH_URL = "https://example.com/search";
-
-    // Set Link Target
     document.getElementById('return-button').href = RETURN_TO_SEARCH_URL;
 
     // Table Positions (60 Tables Layout)
@@ -437,7 +303,7 @@
       { id: 37, x: 170, y: 300 }, { id: 38, x: 220, y: 300 }, { id: 39, x: 270, y: 300 }, { id: 40, x: 320, y: 300 }, { id: 41, x: 370, y: 300 }, { id: 42, x: 420, y: 300 },
       { id: 49, x: 170, y: 360 }, { id: 50, x: 220, y: 360 }, { id: 51, x: 270, y: 360 }, { id: 52, x: 320, y: 360 }, { id: 53, x: 370, y: 360 }, { id: 54, x: 420, y: 360 },
 
-      // Right Side Blocks (Columns 7 to 12) - Shifted right to prevent dance floor overlap
+      // Right Side Blocks (Columns 7 to 12)
       { id: 11, x: 610, y: 120 }, { id: 12, x: 660, y: 120 }, { id: 13, x: 710, y: 120 }, { id: 14, x: 760, y: 120 }, { id: 15, x: 810, y: 120 }, { id: 16, x: 860, y: 120 },
       { id: 19, x: 610, y: 180 }, { id: 20, x: 660, y: 180 }, { id: 21, x: 710, y: 180 }, { id: 22, x: 760, y: 180 }, { id: 23, x: 810, y: 180 }, { id: 24, x: 860, y: 180 },
       { id: 31, x: 610, y: 240 }, { id: 32, x: 660, y: 240 }, { id: 33, x: 710, y: 240 }, { id: 34, x: 760, y: 240 }, { id: 35, x: 810, y: 240 }, { id: 36, x: 860, y: 240 },
@@ -445,33 +311,16 @@
       { id: 55, x: 610, y: 360 }, { id: 56, x: 660, y: 360 }, { id: 57, x: 710, y: 360 }, { id: 58, x: 760, y: 360 }, { id: 59, x: 810, y: 360 }, { id: 60, x: 860, y: 360 }
     ];
 
-    // Render Plain Tables
+    // Render Simplified Tables (Single Circle without chairs)
     const tablesLayer = document.getElementById('tables-layer');
-
-    function createChairs(cx, cy, r, count = 10) {
-      let chairsSVG = '';
-      for (let i = 0; i < count; i++) {
-        const angle = (i * 360 / count) * (Math.PI / 180);
-        const cr = 3.5;
-        const dist = r + 5;
-        const x = cx + dist * Math.cos(angle);
-        const y = cy + dist * Math.sin(angle);
-        chairsSVG += `<circle class="table-chair" cx="${x}" cy="${y}" r="${cr}" />`;
-      }
-      return chairsSVG;
-    }
 
     tablePositions.forEach(table => {
       const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
       g.setAttribute('class', 'table-group');
       g.setAttribute('id', `table-${table.id}`);
-      g.setAttribute('data-id', table.id);
 
-      const chairs = createChairs(table.x, table.y, 18, 10);
-      
       g.innerHTML = `
         <circle class="pulse-ring" cx="${table.x}" cy="${table.y}" r="22" />
-        ${chairs}
         <circle class="table-circle" cx="${table.x}" cy="${table.y}" r="18" />
         <text class="table-number" x="${table.x}" y="${table.y}">${table.id}</text>
       `;
@@ -480,7 +329,7 @@
       tablesLayer.appendChild(g);
     });
 
-    // Pan & Zoom Engine
+    // Pan & Zoom Engine with 95% Width Default Fit
     const viewport = document.getElementById('viewport');
     const transformGroup = document.getElementById('map-transform-group');
 
@@ -497,9 +346,10 @@
 
     function resetView() {
       const rect = viewport.getBoundingClientRect();
-      scale = rect.width / 1000;
-      pointX = 0;
-      pointY = (rect.height - (900 * scale)) / 2;
+      // Configure initial scaling to consume 95% of the viewing width automatically
+      scale = (rect.width * 0.95) / 1000;
+      pointX = (rect.width - (1000 * scale)) / 2;
+      pointY = 16; // Slight top offset below header
       setTransform();
     }
 
@@ -508,7 +358,7 @@
 
     // Touch & Pointer Drag
     viewport.addEventListener('pointerdown', (e) => {
-      if (e.target.closest('.zoom-controls') || e.target.closest('header')) return;
+      if (e.target.closest('header')) return;
       isPanning = true;
       startX = e.clientX - pointX;
       startY = e.clientY - pointY;
@@ -549,7 +399,7 @@
           e.touches[0].clientY - e.touches[1].clientY
         );
         const factor = dist / initialPinchDist;
-        scale = Math.min(Math.max(initialScale * factor, 0.5), 4);
+        scale = Math.min(Math.max(initialScale * factor, 0.4), 4);
         setTransform();
       }
     });
@@ -557,19 +407,6 @@
     viewport.addEventListener('touchend', () => {
       initialPinchDist = null;
     });
-
-    // Zoom Buttons
-    document.getElementById('btn-zoom-in').addEventListener('click', () => {
-      scale = Math.min(scale * 1.3, 4);
-      setTransform();
-    });
-
-    document.getElementById('btn-zoom-out').addEventListener('click', () => {
-      scale = Math.max(scale / 1.3, 0.5);
-      setTransform();
-    });
-
-    document.getElementById('btn-zoom-reset').addEventListener('click', resetView);
 
     // Table Selection & Zoom Focus
     let selectedId = null;
@@ -589,14 +426,12 @@
         const el = document.getElementById(`table-${id}`);
         if (el) el.classList.add('selected');
 
-        // Smooth Focus Zoom to Table
         const rect = viewport.getBoundingClientRect();
         scale = 1.8;
         pointX = (rect.width / 2) - (target.x * scale);
         pointY = (rect.height / 2) - (target.y * scale);
         setTransform();
 
-        // Open Bottom Sheet
         sheetTitle.textContent = `Table ${id}`;
         sheet.classList.add('open');
       }
@@ -604,15 +439,6 @@
 
     document.getElementById('sheet-close').addEventListener('click', () => {
       sheet.classList.remove('open');
-    });
-
-    // Search Box Listener
-    const searchInput = document.getElementById('table-search');
-    searchInput.addEventListener('input', (e) => {
-      const val = parseInt(e.target.value.trim(), 10);
-      if (val && val >= 1 && val <= 60) {
-        selectTable(val);
-      }
     });
   </script>
 </body>
