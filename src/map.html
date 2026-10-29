@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Sierra Ballroom - Seating Chart</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-touch-callout: none;
+    }
+
+    body, html {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: #0d1117;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: #f0f6fc;
+    }
+
+    /* Fixed App Layout */
+    #app {
+      display: flex;
+      flex-direction: column;
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh;
+      position: relative;
+    }
+
+    /* Top Floating Controls Header */
+    header {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 12px 16px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      background: linear-gradient(180deg, rgba(13,17,23,0.95) 0%, rgba(13,17,23,0.8) 75%, rgba(13,17,23,0) 100%);
+      pointer-events: none;
+    }
+
+    header > * {
+      pointer-events: auto;
+    }
+
+    /* Return to Search Button */
+    .btn-return {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(33, 38, 45, 0.9);
+      border: 1px solid rgba(240, 246, 252, 0.2);
+      color: #58a6ff;
+      padding: 10px 14px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      transition: background 0.2s, transform 0.1s;
+      white-space: nowrap;
+    }
+
+    .btn-return:active {
+      transform: scale(0.96);
+      background: rgba(48, 54, 61, 1);
+    }
+
+    /* Table Search Input */
+    .search-box {
+      flex: 1;
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .search-box input {
+      width: 100%;
+      background: rgba(22, 27, 34, 0.9);
+      border: 1px solid rgba(240, 246, 252, 0.2);
+      border-radius: 20px;
+      padding: 10px 14px 10px 36px;
+      color: #ffffff;
+      font-size: 14px;
+      outline: none;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .search-box input::placeholder {
+      color: #8b949e;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      width: 16px;
+      height: 16px;
+      fill: #8b949e;
+      pointer-events: none;
+    }
+
+    /* Interactive Canvas Viewport */
+    #viewport {
+      flex: 1;
+      width: 100%;
+      height: 100%;
+      cursor: grab;
+      touch-action: none;
+      background-color: #0d1117;
+      overflow: hidden;
+      position: relative;
+    }
+
+    #viewport:active {
+      cursor: grabbing;
+    }
+
+    #map-svg {
+      width: 100%;
+      height: 100%;
+      transform-origin: 0 0;
+      will-change: transform;
+    }
+
+    /* Map SVG Styling */
+    .room-border {
+      fill: #161b22;
+      stroke: #30363d;
+      stroke-width: 3;
+    }
+
+    .orient-bg {
+      fill: #21262d;
+      stroke: #8b949e;
+      stroke-width: 1.5;
+    }
+
+    .orient-text {
+      fill: #c9d1d9;
+      font-size: 14px;
+      font-weight: 600;
+      text-anchor: middle;
+      dominant-baseline: middle;
+    }
+
+    .orient-subtext {
+      fill: #8b949e;
+      font-size: 11px;
+      text-anchor: middle;
+      dominant-baseline: middle;
+    }
+
+    /* Table Node Styling */
+    .table-group {
+      cursor: pointer;
+      transition: transform 0.15s ease;
+    }
+
+    .table-circle {
+      fill: #1f2937;
+      stroke: #4b5563;
+      stroke-width: 2;
+      transition: fill 0.2s, stroke 0.2s, stroke-width 0.2s;
+    }
+
+    .table-chair {
+      fill: #374151;
+      stroke: #1f2937;
+      stroke-width: 1;
+    }
+
+    .table-number {
+      fill: #f3f4f6;
+      font-size: 13px;
+      font-weight: 700;
+      text-anchor: middle;
+      dominant-baseline: central;
+      pointer-events: none;
+    }
+
+    /* Selected Table Highlight Animation */
+    .table-group.selected .table-circle {
+      fill: #1e3a8a;
+      stroke: #60a5fa;
+      stroke-width: 3.5;
+    }
+
+    .table-group.selected .table-number {
+      fill: #ffffff;
+    }
+
+    .pulse-ring {
+      fill: none;
+      stroke: #60a5fa;
+      stroke-width: 3;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .table-group.selected .pulse-ring {
+      animation: pulse 1.5s infinite ease-out;
+    }
+
+    @keyframes pulse {
+      0% {
+        r: 22px;
+        opacity: 0.9;
+        stroke-width: 4px;
+      }
+      100% {
+        r: 45px;
+        opacity: 0;
+        stroke-width: 1px;
+      }
+    }
+
+    /* Zoom Controls Floating Buttons */
+    .zoom-controls {
+      position: absolute;
+      right: 16px;
+      bottom: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      z-index: 90;
+    }
+
+    .zoom-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 22px;
+      background: rgba(33, 38, 45, 0.9);
+      border: 1px solid rgba(240, 246, 252, 0.2);
+      color: #f0f6fc;
+      font-size: 20px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      cursor: pointer;
+    }
+
+    .zoom-btn:active {
+      transform: scale(0.92);
+      background: #30363d;
+    }
+
+    /* Touch Bottom Sheet Modal */
+    .bottom-sheet {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #161b22;
+      border-top: 1px solid #30363d;
+      border-radius: 16px 16px 0 0;
+      padding: 16px 20px 24px 20px;
+      z-index: 200;
+      transform: translateY(100%);
+      transition: transform 0.25s cubic-bezier(0.1, 0.9, 0.2, 1);
+      box-shadow: 0 -8px 24px rgba(0,0,0,0.5);
+    }
+
+    .bottom-sheet.open {
+      transform: translateY(0);
+    }
+
+    .sheet-handle {
+      width: 36px;
+      height: 4px;
+      background: #484f58;
+      border-radius: 2px;
+      margin: 0 auto 12px auto;
+    }
+
+    .sheet-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .sheet-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #f0f6fc;
+    }
+
+    .sheet-subtitle {
+      font-size: 13px;
+      color: #8b949e;
+      margin-top: 2px;
+    }
+
+    .close-btn {
+      background: #21262d;
+      border: 1px solid #30363d;
+      color: #c9d1d9;
+      padding: 8px 16px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="app">
+    <!-- Top Floating Header -->
+    <header>
+      <a id="return-button" href="#" class="btn-return">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        Return to Search
+      </a>
+
+      <div class="search-box">
+        <svg class="search-icon" viewBox="0 0 24 24">
+          <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+        </svg>
+        <input type="number" id="table-search" placeholder="Find Table #" pattern="[0-9]*" inputmode="numeric">
+      </div>
+    </header>
+
+    <!-- Interactive SVG Canvas Viewport -->
+    <div id="viewport">
+      <svg id="map-svg" viewBox="0 0 1000 900">
+        <g id="map-transform-group">
+          <!-- Outer Room Outline -->
+          <path class="room-border" d="
+            M 50,40 
+            L 280,40 L 280,30 L 370,30 L 370,40 L 610,40 L 610,30 L 830,30 L 830,40 L 950,40
+            L 950,220 L 965,220 L 965,480 L 950,480 L 950,700 L 870,780 L 810,850 L 720,850 
+            L 670,820 L 590,820 L 540,860 L 460,860 L 410,810 L 350,880 L 280,880 L 220,810
+            L 120,810 L 50,730 L 80,680 L 50,650 L 90,520 L 50,500 L 90,380 L 50,350 L 90,200 L 50,180 Z" />
+
+          <!-- Orienting Marks: Screens, Stage, Dance Floor, Bars -->
+          <g id="orientation-markers">
+            <!-- Top Projection Screens -->
+            <rect class="orient-bg" x="280" y="45" width="75" height="25" rx="3" />
+            <text class="orient-text" x="317.5" y="57.5" font-size="11">Screen</text>
+
+            <rect class="orient-bg" x="750" y="45" width="75" height="25" rx="3" />
+            <text class="orient-text" x="787.5" y="57.5" font-size="11">Screen</text>
+
+            <!-- 8x24 Stage -->
+            <rect class="orient-bg" x="430" y="75" width="140" height="45" rx="3" />
+            <text class="orient-text" x="500" y="97.5">8x24 Stage</text>
+
+            <!-- 20x20 Dance Floor -->
+            <rect class="orient-bg" x="420" y="130" width="160" height="150" rx="4" />
+            <text class="orient-text" x="500" y="195">20x20 Dance Floor</text>
+
+            <!-- Bars -->
+            <!-- Bottom Left Bars -->
+            <g transform="translate(190, 770)">
+              <polygon points="0,0 24,0 20,20 4,20" class="orient-bg" />
+              <text class="orient-subtext" x="12" y="10" fill="#f87171" font-weight="bold">Bar</text>
+            </g>
+            <g transform="translate(260, 770)">
+              <polygon points="0,0 24,0 20,20 4,20" class="orient-bg" />
+              <text class="orient-subtext" x="12" y="10" fill="#f87171" font-weight="bold">Bar</text>
+            </g>
+            <g transform="translate(330, 770)">
+              <polygon points="0,0 24,0 20,20 4,20" class="orient-bg" />
+              <text class="orient-subtext" x="12" y="10" fill="#f87171" font-weight="bold">Bar</text>
+            </g>
+
+            <!-- Bottom Right Bars -->
+            <g transform="translate(800, 780) rotate(-35)">
+              <polygon points="0,0 28,0 24,18 4,18" class="orient-bg" />
+              <text class="orient-subtext" x="14" y="9" fill="#f87171" font-weight="bold">Bar</text>
+            </g>
+            <g transform="translate(850, 730) rotate(-35)">
+              <polygon points="0,0 28,0 24,18 4,18" class="orient-bg" />
+              <text class="orient-subtext" x="14" y="9" fill="#f87171" font-weight="bold">Bar</text>
+            </g>
+          </g>
+
+          <!-- Dynamic Tables Container -->
+          <g id="tables-layer"></g>
+        </g>
+      </svg>
+    </div>
+
+    <!-- Zoom Controls -->
+    <div class="zoom-controls">
+      <button class="zoom-btn" id="btn-zoom-in">+</button>
+      <button class="zoom-btn" id="btn-zoom-out">−</button>
+      <button class="zoom-btn" id="btn-zoom-reset" style="font-size:12px;">RESET</button>
+    </div>
+
+    <!-- Touch Bottom Sheet Info Card -->
+    <div class="bottom-sheet" id="bottom-sheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-content">
+        <div>
+          <div class="sheet-title" id="sheet-title">Table 1</div>
+          <div class="sheet-subtitle">Sierra Ballroom Seating</div>
+        </div>
+        <button class="close-btn" id="sheet-close">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Configurable Return-to-Search URL
+    const RETURN_TO_SEARCH_URL = "https://example.com/search";
+
+    // Set Link Target
+    document.getElementById('return-button').href = RETURN_TO_SEARCH_URL;
+
+    // Table Positions (60 Tables Layout)
+    const tablePositions = [
+      // Left Side Blocks (Columns 1 to 6)
+      { id: 1, x: 170, y: 120 }, { id: 2, x: 220, y: 120 }, { id: 3, x: 270, y: 120 }, { id: 4, x: 320, y: 120 }, { id: 5, x: 370, y: 120 }, { id: 6, x: 420, y: 120 },
+      { id: 7, x: 170, y: 180 }, { id: 8, x: 220, y: 180 }, { id: 9, x: 270, y: 180 }, { id: 10, x: 320, y: 180 }, { id: 17, x: 370, y: 180 }, { id: 18, x: 420, y: 180 },
+      { id: 25, x: 170, y: 240 }, { id: 26, x: 220, y: 240 }, { id: 27, x: 270, y: 240 }, { id: 28, x: 320, y: 240 }, { id: 29, x: 370, y: 240 }, { id: 30, x: 420, y: 240 },
+      { id: 37, x: 170, y: 300 }, { id: 38, x: 220, y: 300 }, { id: 39, x: 270, y: 300 }, { id: 40, x: 320, y: 300 }, { id: 41, x: 370, y: 300 }, { id: 42, x: 420, y: 300 },
+      { id: 49, x: 170, y: 360 }, { id: 50, x: 220, y: 360 }, { id: 51, x: 270, y: 360 }, { id: 52, x: 320, y: 360 }, { id: 53, x: 370, y: 360 }, { id: 54, x: 420, y: 360 },
+
+      // Right Side Blocks (Columns 7 to 12) - Shifted right to prevent dance floor overlap
+      { id: 11, x: 610, y: 120 }, { id: 12, x: 660, y: 120 }, { id: 13, x: 710, y: 120 }, { id: 14, x: 760, y: 120 }, { id: 15, x: 810, y: 120 }, { id: 16, x: 860, y: 120 },
+      { id: 19, x: 610, y: 180 }, { id: 20, x: 660, y: 180 }, { id: 21, x: 710, y: 180 }, { id: 22, x: 760, y: 180 }, { id: 23, x: 810, y: 180 }, { id: 24, x: 860, y: 180 },
+      { id: 31, x: 610, y: 240 }, { id: 32, x: 660, y: 240 }, { id: 33, x: 710, y: 240 }, { id: 34, x: 760, y: 240 }, { id: 35, x: 810, y: 240 }, { id: 36, x: 860, y: 240 },
+      { id: 43, x: 610, y: 300 }, { id: 44, x: 660, y: 300 }, { id: 45, x: 710, y: 300 }, { id: 46, x: 760, y: 300 }, { id: 47, x: 810, y: 300 }, { id: 48, x: 860, y: 300 },
+      { id: 55, x: 610, y: 360 }, { id: 56, x: 660, y: 360 }, { id: 57, x: 710, y: 360 }, { id: 58, x: 760, y: 360 }, { id: 59, x: 810, y: 360 }, { id: 60, x: 860, y: 360 }
+    ];
+
+    // Render Plain Tables
+    const tablesLayer = document.getElementById('tables-layer');
+
+    function createChairs(cx, cy, r, count = 10) {
+      let chairsSVG = '';
+      for (let i = 0; i < count; i++) {
+        const angle = (i * 360 / count) * (Math.PI / 180);
+        const cr = 3.5;
+        const dist = r + 5;
+        const x = cx + dist * Math.cos(angle);
+        const y = cy + dist * Math.sin(angle);
+        chairsSVG += `<circle class="table-chair" cx="${x}" cy="${y}" r="${cr}" />`;
+      }
+      return chairsSVG;
+    }
+
+    tablePositions.forEach(table => {
+      const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+      g.setAttribute('class', 'table-group');
+      g.setAttribute('id', `table-${table.id}`);
+      g.setAttribute('data-id', table.id);
+
+      const chairs = createChairs(table.x, table.y, 18, 10);
+      
+      g.innerHTML = `
+        <circle class="pulse-ring" cx="${table.x}" cy="${table.y}" r="22" />
+        ${chairs}
+        <circle class="table-circle" cx="${table.x}" cy="${table.y}" r="18" />
+        <text class="table-number" x="${table.x}" y="${table.y}">${table.id}</text>
+      `;
+
+      g.addEventListener('click', () => selectTable(table.id));
+      tablesLayer.appendChild(g);
+    });
+
+    // Pan & Zoom Engine
+    const viewport = document.getElementById('viewport');
+    const transformGroup = document.getElementById('map-transform-group');
+
+    let scale = 1;
+    let pointX = 0;
+    let pointY = 0;
+    let startX = 0;
+    let startY = 0;
+    let isPanning = false;
+
+    function setTransform() {
+      transformGroup.setAttribute('transform', `translate(${pointX}, ${pointY}) scale(${scale})`);
+    }
+
+    function resetView() {
+      const rect = viewport.getBoundingClientRect();
+      scale = rect.width / 1000;
+      pointX = 0;
+      pointY = (rect.height - (900 * scale)) / 2;
+      setTransform();
+    }
+
+    window.addEventListener('resize', resetView);
+    resetView();
+
+    // Touch & Pointer Drag
+    viewport.addEventListener('pointerdown', (e) => {
+      if (e.target.closest('.zoom-controls') || e.target.closest('header')) return;
+      isPanning = true;
+      startX = e.clientX - pointX;
+      startY = e.clientY - pointY;
+      viewport.setPointerCapture(e.pointerId);
+    });
+
+    viewport.addEventListener('pointermove', (e) => {
+      if (!isPanning) return;
+      pointX = e.clientX - startX;
+      pointY = e.clientY - startY;
+      setTransform();
+    });
+
+    viewport.addEventListener('pointerup', (e) => {
+      isPanning = false;
+      try { viewport.releasePointerCapture(e.pointerId); } catch(err) {}
+    });
+
+    // Touch Pinch Zoom
+    let initialPinchDist = null;
+    let initialScale = 1;
+
+    viewport.addEventListener('touchstart', (e) => {
+      if (e.touches.length === 2) {
+        isPanning = false;
+        initialPinchDist = Math.hypot(
+          e.touches[0].clientX - e.touches[1].clientX,
+          e.touches[0].clientY - e.touches[1].clientY
+        );
+        initialScale = scale;
+      }
+    });
+
+    viewport.addEventListener('touchmove', (e) => {
+      if (e.touches.length === 2 && initialPinchDist) {
+        const dist = Math.hypot(
+          e.touches[0].clientX - e.touches[1].clientX,
+          e.touches[0].clientY - e.touches[1].clientY
+        );
+        const factor = dist / initialPinchDist;
+        scale = Math.min(Math.max(initialScale * factor, 0.5), 4);
+        setTransform();
+      }
+    });
+
+    viewport.addEventListener('touchend', () => {
+      initialPinchDist = null;
+    });
+
+    // Zoom Buttons
+    document.getElementById('btn-zoom-in').addEventListener('click', () => {
+      scale = Math.min(scale * 1.3, 4);
+      setTransform();
+    });
+
+    document.getElementById('btn-zoom-out').addEventListener('click', () => {
+      scale = Math.max(scale / 1.3, 0.5);
+      setTransform();
+    });
+
+    document.getElementById('btn-zoom-reset').addEventListener('click', resetView);
+
+    // Table Selection & Zoom Focus
+    let selectedId = null;
+    const sheet = document.getElementById('bottom-sheet');
+    const sheetTitle = document.getElementById('sheet-title');
+
+    function selectTable(id) {
+      if (selectedId) {
+        const prev = document.getElementById(`table-${selectedId}`);
+        if (prev) prev.classList.remove('selected');
+      }
+
+      selectedId = id;
+      const target = tablePositions.find(t => t.id === id);
+
+      if (target) {
+        const el = document.getElementById(`table-${id}`);
+        if (el) el.classList.add('selected');
+
+        // Smooth Focus Zoom to Table
+        const rect = viewport.getBoundingClientRect();
+        scale = 1.8;
+        pointX = (rect.width / 2) - (target.x * scale);
+        pointY = (rect.height / 2) - (target.y * scale);
+        setTransform();
+
+        // Open Bottom Sheet
+        sheetTitle.textContent = `Table ${id}`;
+        sheet.classList.add('open');
+      }
+    }
+
+    document.getElementById('sheet-close').addEventListener('click', () => {
+      sheet.classList.remove('open');
+    });
+
+    // Search Box Listener
+    const searchInput = document.getElementById('table-search');
+    searchInput.addEventListener('input', (e) => {
+      const val = parseInt(e.target.value.trim(), 10);
+      if (val && val >= 1 && val <= 60) {
+        selectTable(val);
+      }
+    });
+  </script>
+</body>
+</html>
