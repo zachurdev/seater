@@ -1,4 +1,14 @@
 id,name,table,tableName,seat,notes
+106,"LITTLEJOHN, DWAYNE M.",18,VIP Table,Seat 1,Lieutenant Colonel
+107,CHANEL LITTLEJOHN,18,VIP Table,Seat 2,Guest
+108,CHRISTOPHER LEE,18,VIP Table,Seat 3,Guest
+109,KAMALI LEE,18,VIP Table,Seat 4,Guest
+110,"BROWN, MITCHELL T.",18,VIP Table,Seat 5,Sergeant Major
+111,Adrienne R. Brown,18,VIP Table,Seat 6,Guest
+29,BLUE DIAMOND NINE,18,VIP Table,Seat 7,Sergeant Major
+30,MRS SOTORODRIGUEZ,18,VIP Table,Seat 8,Guest
+23,"WOOD, SCOTT K.",18,VIP Table,Seat 9,Major
+24, MRS. WOOD ,18,VIP Table,Seat 10,Guest
 36,"PHAN, DANA T.",1,Table 1,Seat 1,Sergeant
 43,"TORRES, JOSHUA ",1,Table 1,Seat 2,Guest
 62,"WORSHAM, CHANDLER J.",1,Table 1,Seat 3,Sergeant
@@ -142,16 +152,6 @@ id,name,table,tableName,seat,notes
 6,"UNDERBERG, JONATHAN R.",16,Table 16,Seat 6,"Lieutenant Junior Grade, USN"
 3,GARZA JULIAN,16,Table 16,Seat 7,Petty Officer Second Class
 4, SARAH GARZA,16,Table 16,Seat 8,Guest
-106,"LITTLEJOHN, DWAYNE M.",18,Table 18,Seat 1,Lieutenant Colonel
-107,CHANEL LITTLEJOHN,18,Table 18,Seat 2,Guest
-108,CHRISTOPHER LEE,18,Table 18,Seat 3,Guest
-109,KAMALI LEE,18,Table 18,Seat 4,Guest
-110,"BROWN, MITCHELL T.",18,Table 18,Seat 5,Sergeant Major
-111,Adrienne R. Brown,18,Table 18,Seat 6,Guest
-29,BLUE DIAMOND NINE,18,Table 18,Seat 7,Sergeant Major
-30,MRS SOTORODRIGUEZ,18,Table 18,Seat 8,Guest
-23,"WOOD, SCOTT K.",18,Table 18,Seat 9,Major
-24, MRS. WOOD ,18,Table 18,Seat 10,Guest
 223,GARRITY LOGAN R.,24,Table 24,Seat 1,Private First Class
 224,ARGUETA JEFFERSON ,24,Table 24,Seat 2,Private First Class
 219,HARRIS BRANDON,24,Table 24,Seat 3,Private First Class

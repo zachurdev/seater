@@ -4,16 +4,22 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Seating Layout</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
 <style>
   :root {
     color-scheme: dark;
-    --page: #0d1117;
-    --room: #151b23;
-    --seat: #202b3b;
-    --seat-line: #465365;
-    --fixture: #20262f;
-    --fixture-line: #858f9c;
-    --text: #edf1f6;
+    --page: #050811;
+    --room: #0b1120;
+    --seat: #0f172a;
+    --seat-line: #334155;
+    --fixture: #111b30;
+    --fixture-line: #ca8a04;
+    --text: #f1f5f9;
+    --muted: #cbd5e1;
+    --gold: #eab308;
+    --gold-hover: #facc15;
   }
   * { box-sizing: border-box; }
   html, body { min-height: 100%; margin: 0; }
@@ -23,20 +29,23 @@
     padding: clamp(12px, 3vw, 36px);
     background: var(--page);
     color: var(--text);
-    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-family: "Inter", system-ui, sans-serif;
   }
   main { width: min(100%, 760px); }
-  .page-nav { display: flex; margin-bottom: 14px; }
+  .page-nav {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid #1e293b;
+  }
   .back-link {
     display: inline-flex; align-items: center; gap: 8px;
-    padding: 9px 13px; border: 1px solid var(--seat-line); border-radius: 8px;
-    background: var(--seat); color: var(--text); font-size: 14px; font-weight: 600;
+    padding: 9px 13px; border: 1px solid var(--gold); border-radius: 8px;
+    background: var(--gold); color: #050811; font-size: 14px; font-weight: 600;
     text-decoration: none;
   }
-  .back-link:hover { background: var(--fixture); }
-  .back-link:focus-visible { outline: 2px solid var(--text); outline-offset: 3px; }
+  .back-link:hover { background: var(--gold-hover); border-color: var(--gold-hover); }
+  .back-link:focus-visible { outline: 2px solid var(--gold-hover); outline-offset: 3px; }
   .diagram { display: block; width: 100%; height: auto; }
-  .room { fill: var(--room); stroke: #303943; stroke-width: 5; }
+  .room { fill: var(--room); stroke: #1e293b; stroke-width: 5; }
   .seat { fill: var(--seat); stroke: var(--seat-line); stroke-width: 3.4; }
   .seat-number {
     fill: var(--text); font-size: 18px; font-weight: 700;
@@ -44,7 +53,7 @@
   }
   .fixture { fill: var(--fixture); stroke: var(--fixture-line); stroke-width: 2.5; }
   .fixture-label {
-    fill: #d5dbe4; font-size: 19px; font-weight: 650; letter-spacing: .1px;
+    fill: var(--muted); font-size: 19px; font-weight: 650; letter-spacing: .1px;
     text-anchor: middle; dominant-baseline: central;
   }
   .floor-label { font-size: 21px; }
@@ -55,7 +64,7 @@
     .seat-number { font-size: 18px; }
   }
   @media print {
-    :root { color-scheme: light; --page: #fff; --room: #f4f6f8; --seat: #e5eaf0; --seat-line: #a6b0bc; --fixture: #e9edf1; --fixture-line: #8c96a3; --text: #1c2631; }
+    :root { color-scheme: light; --page: #fff; --room: #f4f6f8; --seat: #e5eaf0; --seat-line: #a6b0bc; --fixture: #e9edf1; --fixture-line: #8c96a3; --text: #1c2631; --muted: #374151; --gold: #ca8a04; --gold-hover: #ca8a04; }
     body { background: #fff; padding: 0; }
     main { width: 100%; max-width: none; }
     .page-nav { display: none; }
