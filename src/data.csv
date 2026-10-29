@@ -1,14 +1,14 @@
 id,name,table,tableName,seat,notes
-106,"LITTLEJOHN, DWAYNE M.",18,VIP Table,Seat 1,Lieutenant Colonel
-107,CHANEL LITTLEJOHN,18,VIP Table,Seat 2,Guest
-108,CHRISTOPHER LEE,18,VIP Table,Seat 3,Guest
-109,KAMALI LEE,18,VIP Table,Seat 4,Guest
-110,"BROWN, MITCHELL T.",18,VIP Table,Seat 5,Sergeant Major
-111,Adrienne R. Brown,18,VIP Table,Seat 6,Guest
-29,BLUE DIAMOND NINE,18,VIP Table,Seat 7,Sergeant Major
-30,MRS SOTORODRIGUEZ,18,VIP Table,Seat 8,Guest
-23,"WOOD, SCOTT K.",18,VIP Table,Seat 9,Major
-24, MRS. WOOD ,18,VIP Table,Seat 10,Guest
+106,"LITTLEJOHN, DWAYNE M.",18,VIP Table (Table 18),Seat 1,Lieutenant Colonel
+107,CHANEL LITTLEJOHN,18,VIP Table (Table 18),Seat 2,Guest
+108,CHRISTOPHER LEE,18,VIP Table (Table 18),Seat 3,Guest
+109,KAMALI LEE,18,VIP Table (Table 18),Seat 4,Guest
+110,"BROWN, MITCHELL T.",18,VIP Table (Table 18),Seat 5,Sergeant Major
+111,Adrienne R. Brown,18,VIP Table (Table 18),Seat 6,Guest
+29,BLUE DIAMOND NINE,18,VIP Table (Table 18),Seat 7,Sergeant Major
+30,MRS SOTORODRIGUEZ,18,VIP Table (Table 18),Seat 8,Guest
+23,"WOOD, SCOTT K.",18,VIP Table (Table 18),Seat 9,Major
+24, MRS. WOOD ,18,VIP Table (Table 18),Seat 10,Guest
 36,"PHAN, DANA T.",1,Table 1,Seat 1,Sergeant
 43,"TORRES, JOSHUA ",1,Table 1,Seat 2,Guest
 62,"WORSHAM, CHANDLER J.",1,Table 1,Seat 3,Sergeant
