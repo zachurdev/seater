@@ -4,22 +4,23 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Seating Layout</title>
+<link rel="stylesheet" href="../theme.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
 <style>
   :root {
     color-scheme: dark;
-    --page: #050811;
-    --room: #0b1120;
-    --seat: #0f172a;
-    --seat-line: #334155;
-    --fixture: #111b30;
-    --fixture-line: #ca8a04;
-    --text: #f1f5f9;
-    --muted: #cbd5e1;
-    --gold: #eab308;
-    --gold-hover: #facc15;
+    --page: rgb(var(--mc-charcoal-950));
+    --room: rgb(var(--mc-charcoal-900));
+    --seat: rgb(var(--mc-charcoal-800));
+    --seat-line: rgb(var(--mc-border));
+    --fixture: rgb(var(--mc-charcoal-800));
+    --fixture-line: rgb(var(--mc-gold-600));
+    --text: rgb(var(--mc-neutral-100));
+    --muted: rgb(var(--mc-neutral-300));
+    --gold: rgb(var(--mc-gold-500));
+    --gold-hover: rgb(var(--mc-gold-400));
   }
   * { box-sizing: border-box; }
   html, body { min-height: 100%; margin: 0; }
@@ -29,23 +30,23 @@
     padding: clamp(12px, 3vw, 36px);
     background: var(--page);
     color: var(--text);
-    font-family: "Inter", system-ui, sans-serif;
+    font-family: var(--mc-font-sans);
   }
   main { width: min(100%, 760px); }
   .page-nav {
     display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid #1e293b;
+    margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid rgb(var(--mc-border));
   }
   .back-link {
     display: inline-flex; align-items: center; gap: 8px;
     padding: 9px 13px; border: 1px solid var(--gold); border-radius: 8px;
-    background: var(--gold); color: #050811; font-size: 14px; font-weight: 600;
+    background: var(--gold); color: rgb(var(--mc-charcoal-950)); font-size: 14px; font-weight: 600;
     text-decoration: none;
   }
   .back-link:hover { background: var(--gold-hover); border-color: var(--gold-hover); }
   .back-link:focus-visible { outline: 2px solid var(--gold-hover); outline-offset: 3px; }
   .diagram { display: block; width: 100%; height: auto; }
-  .room { fill: var(--room); stroke: #1e293b; stroke-width: 5; }
+  .room { fill: var(--room); stroke: rgb(var(--mc-border)); stroke-width: 5; }
   .seat { fill: var(--seat); stroke: var(--seat-line); stroke-width: 3.4; }
   .seat-number {
     fill: var(--text); font-size: 18px; font-weight: 700;

@@ -1,0 +1,28 @@
+:root {
+  color-scheme: dark;
+  --mc-charcoal-950: 15 16 18;
+  --mc-charcoal-900: 25 26 29;
+  --mc-charcoal-800: 35 37 40;
+  --mc-charcoal-700: 55 58 62;
+  --mc-charcoal-600: 87 90 94;
+  --mc-neutral-500: 122 123 124;
+  --mc-neutral-400: 174 175 176;
+  --mc-neutral-300: 211 212 211;
+  --mc-neutral-200: 231 231 228;
+  --mc-neutral-100: 246 245 240;
+  --mc-border: 61 63 65;
+  --mc-gold-300: 248 220 157;
+  --mc-gold-400: 245 201 107;
+  --mc-gold-500: 233 175 66;
+  --mc-gold-600: 199 142 44;
+  --mc-scarlet-400: 222 94 78;
+  --mc-scarlet-500: 201 51 42;
+  --mc-scarlet-600: 169 39 33;
+  --mc-font-sans: "Inter", system-ui, sans-serif;
+  --mc-font-display: "Playfair Display", Georgia, serif;
+}
+
+:where(a, button, input):focus-visible {
+  outline: 2px solid rgb(var(--mc-gold-400));
+  outline-offset: 2px;
+}
