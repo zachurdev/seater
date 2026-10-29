@@ -1,466 +1,225 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Sierra Ballroom - Seating Chart</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      user-select: none;
-      -webkit-user-select: none;
-      -webkit-touch-callout: none;
-    }
-
-    body, html {
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      background-color: #0d1117;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      color: #f0f6fc;
-    }
-
-    #app {
-      display: flex;
-      flex-direction: column;
-      width: 100vw;
-      height: 100vh;
-      height: 100dvh;
-      position: relative;
-    }
-
-    /* Top Floating Header */
-    header {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 100;
-      padding: 12px 16px;
-      display: flex;
-      align-items: center;
-      background: linear-gradient(180deg, rgba(13,17,23,0.95) 0%, rgba(13,17,23,0.8) 75%, rgba(13,17,23,0) 100%);
-      pointer-events: none;
-    }
-
-    header > * {
-      pointer-events: auto;
-    }
-
-    .btn-return {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(33, 38, 45, 0.95);
-      border: 1px solid rgba(240, 246, 252, 0.25);
-      color: #58a6ff;
-      padding: 10px 16px;
-      border-radius: 20px;
-      font-size: 14px;
-      font-weight: 600;
-      text-decoration: none;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      transition: background 0.2s, transform 0.1s;
-      white-space: nowrap;
-    }
-
-    .btn-return:active {
-      transform: scale(0.96);
-      background: rgba(48, 54, 61, 1);
-    }
-
-    /* Canvas Viewport */
-    #viewport {
-      flex: 1;
-      width: 100%;
-      height: 100%;
-      cursor: grab;
-      touch-action: none;
-      background-color: #0d1117;
-      overflow: hidden;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    #viewport:active {
-      cursor: grabbing;
-    }
-
-    #map-svg {
-      width: 100%;
-      height: 100%;
-      transform-origin: 0 0;
-      will-change: transform;
-    }
-
-    .room-border {
-      fill: #161b22;
-      stroke: #30363d;
-      stroke-width: 3;
-    }
-
-    .orient-bg {
-      fill: #21262d;
-      stroke: #8b949e;
-      stroke-width: 1.5;
-    }
-
-    .orient-text {
-      fill: #c9d1d9;
-      font-size: 13px;
-      font-weight: 600;
-      text-anchor: middle;
-      dominant-baseline: middle;
-    }
-
-    /* Table Node Styling */
-    .table-group {
-      cursor: pointer;
-    }
-
-    .table-circle {
-      fill: #1f2937;
-      stroke: #4b5563;
-      stroke-width: 2;
-      transition: fill 0.2s, stroke 0.2s;
-    }
-
-    .table-number {
-      fill: #f3f4f6;
-      font-size: 11px;
-      font-weight: 700;
-      text-anchor: middle;
-      dominant-baseline: central;
-      pointer-events: none;
-    }
-
-    .table-group.selected .table-circle {
-      fill: #1e3a8a;
-      stroke: #60a5fa;
-      stroke-width: 3.5;
-    }
-
-    .table-group.selected .table-number {
-      fill: #ffffff;
-    }
-
-    .pulse-ring {
-      fill: none;
-      stroke: #60a5fa;
-      stroke-width: 3;
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    .table-group.selected .pulse-ring {
-      animation: pulse 1.5s infinite ease-out;
-    }
-
-    @keyframes pulse {
-      0% {
-        r: 18px;
-        opacity: 0.9;
-        stroke-width: 4px;
-      }
-      100% {
-        r: 38px;
-        opacity: 0;
-        stroke-width: 1px;
-      }
-    }
-
-    /* Touch Bottom Sheet Modal */
-    .bottom-sheet {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: #161b22;
-      border-top: 1px solid #30363d;
-      border-radius: 16px 16px 0 0;
-      padding: 16px 20px 24px 20px;
-      z-index: 200;
-      transform: translateY(100%);
-      transition: transform 0.25s cubic-bezier(0.1, 0.9, 0.2, 1);
-      box-shadow: 0 -8px 24px rgba(0,0,0,0.5);
-    }
-
-    .bottom-sheet.open {
-      transform: translateY(0);
-    }
-
-    .sheet-handle {
-      width: 36px;
-      height: 4px;
-      background: #484f58;
-      border-radius: 2px;
-      margin: 0 auto 12px auto;
-    }
-
-    .sheet-content {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .sheet-title {
-      font-size: 20px;
-      font-weight: 700;
-      color: #f0f6fc;
-    }
-
-    .sheet-subtitle {
-      font-size: 13px;
-      color: #8b949e;
-      margin-top: 2px;
-    }
-
-    .close-btn {
-      background: #21262d;
-      border: 1px solid #30363d;
-      color: #c9d1d9;
-      padding: 8px 16px;
-      border-radius: 12px;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Seating Layout</title>
+<style>
+  :root {
+    color-scheme: dark;
+    --page: #0d1117;
+    --room: #151b23;
+    --seat: #202b3b;
+    --seat-line: #465365;
+    --fixture: #20262f;
+    --fixture-line: #858f9c;
+    --text: #edf1f6;
+  }
+  * { box-sizing: border-box; }
+  html, body { min-height: 100%; margin: 0; }
+  body {
+    display: grid;
+    place-items: center;
+    padding: clamp(12px, 3vw, 36px);
+    background: var(--page);
+    color: var(--text);
+    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+  main { width: min(100%, 760px); }
+  .diagram { display: block; width: 100%; height: auto; }
+  .room { fill: var(--room); stroke: #303943; stroke-width: 5; }
+  .seat { fill: var(--seat); stroke: var(--seat-line); stroke-width: 3.4; }
+  .seat-number {
+    fill: var(--text); font-size: 18px; font-weight: 700;
+    text-anchor: middle; dominant-baseline: central; font-variant-numeric: tabular-nums;
+  }
+  .fixture { fill: var(--fixture); stroke: var(--fixture-line); stroke-width: 2.5; }
+  .fixture-label {
+    fill: #d5dbe4; font-size: 19px; font-weight: 650; letter-spacing: .1px;
+    text-anchor: middle; dominant-baseline: central;
+  }
+  .floor-label { font-size: 21px; }
+  .stage-label { font-size: 19px; }
+  .screen-label { font-size: 18px; }
+  @media (max-width: 520px) {
+    body { padding: 10px; }
+    .seat-number { font-size: 18px; }
+  }
+  @media print {
+    :root { color-scheme: light; --page: #fff; --room: #f4f6f8; --seat: #e5eaf0; --seat-line: #a6b0bc; --fixture: #e9edf1; --fixture-line: #8c96a3; --text: #1c2631; }
+    body { background: #fff; padding: 0; }
+    main { width: 100%; max-width: none; }
+  }
+</style>
 </head>
 <body>
+<main aria-label="Seating layout diagram">
+  <svg class="diagram" viewBox="0 0 760 1320" role="img" aria-labelledby="diagram-title diagram-desc" xmlns="http://www.w3.org/2000/svg">
+    <title id="diagram-title">Seating layout</title>
+    <desc id="diagram-desc">Sixty numbered seats in two balanced groups, with a dance floor in the central aisle, an adjacent stage, and screens aligned with the stage on the right.</desc>
+    <rect class="room" x="28" y="10" width="704" height="1300" rx="14" />
+    <g id="room-symbols" transform="translate(-100 0)">
+    <g id="upper-seats" transform="translate(200 0)">
+  <g>
+    <circle class="seat" cx="80" cy="79" r="30"/>
+    <text class="seat-number" x="80" y="79">49</text>
+    <circle class="seat" cx="80" cy="161" r="30"/>
+    <text class="seat-number" x="80" y="161">50</text>
+    <circle class="seat" cx="80" cy="243" r="30"/>
+    <text class="seat-number" x="80" y="243">51</text>
+    <circle class="seat" cx="80" cy="325" r="30"/>
+    <text class="seat-number" x="80" y="325">52</text>
+    <circle class="seat" cx="80" cy="407" r="30"/>
+    <text class="seat-number" x="80" y="407">53</text>
+    <circle class="seat" cx="80" cy="489" r="30"/>
+    <text class="seat-number" x="80" y="489">54</text>
+  </g>
+  <g>
+    <circle class="seat" cx="155" cy="79" r="30"/>
+    <text class="seat-number" x="155" y="79">37</text>
+    <circle class="seat" cx="155" cy="161" r="30"/>
+    <text class="seat-number" x="155" y="161">38</text>
+    <circle class="seat" cx="155" cy="243" r="30"/>
+    <text class="seat-number" x="155" y="243">39</text>
+    <circle class="seat" cx="155" cy="325" r="30"/>
+    <text class="seat-number" x="155" y="325">40</text>
+    <circle class="seat" cx="155" cy="407" r="30"/>
+    <text class="seat-number" x="155" y="407">41</text>
+    <circle class="seat" cx="155" cy="489" r="30"/>
+    <text class="seat-number" x="155" y="489">42</text>
+  </g>
+  <g>
+    <circle class="seat" cx="230" cy="79" r="30"/>
+    <text class="seat-number" x="230" y="79">25</text>
+    <circle class="seat" cx="230" cy="161" r="30"/>
+    <text class="seat-number" x="230" y="161">26</text>
+    <circle class="seat" cx="230" cy="243" r="30"/>
+    <text class="seat-number" x="230" y="243">27</text>
+    <circle class="seat" cx="230" cy="325" r="30"/>
+    <text class="seat-number" x="230" y="325">28</text>
+    <circle class="seat" cx="230" cy="407" r="30"/>
+    <text class="seat-number" x="230" y="407">29</text>
+    <circle class="seat" cx="230" cy="489" r="30"/>
+    <text class="seat-number" x="230" y="489">30</text>
+  </g>
+  <g>
+    <circle class="seat" cx="305" cy="79" r="30"/>
+    <text class="seat-number" x="305" y="79">13</text>
+    <circle class="seat" cx="305" cy="161" r="30"/>
+    <text class="seat-number" x="305" y="161">14</text>
+    <circle class="seat" cx="305" cy="243" r="30"/>
+    <text class="seat-number" x="305" y="243">15</text>
+    <circle class="seat" cx="305" cy="325" r="30"/>
+    <text class="seat-number" x="305" y="325">16</text>
+    <circle class="seat" cx="305" cy="407" r="30"/>
+    <text class="seat-number" x="305" y="407">17</text>
+    <circle class="seat" cx="305" cy="489" r="30"/>
+    <text class="seat-number" x="305" y="489">18</text>
+  </g>
+  <g>
+    <circle class="seat" cx="380" cy="79" r="30"/>
+    <text class="seat-number" x="380" y="79">1</text>
+    <circle class="seat" cx="380" cy="161" r="30"/>
+    <text class="seat-number" x="380" y="161">2</text>
+    <circle class="seat" cx="380" cy="243" r="30"/>
+    <text class="seat-number" x="380" y="243">3</text>
+    <circle class="seat" cx="380" cy="325" r="30"/>
+    <text class="seat-number" x="380" y="325">4</text>
+    <circle class="seat" cx="380" cy="407" r="30"/>
+    <text class="seat-number" x="380" y="407">5</text>
+    <circle class="seat" cx="380" cy="489" r="30"/>
+    <text class="seat-number" x="380" y="489">6</text>
+  </g>
+</g>
+    <g id="lower-seats" transform="translate(200 0)">
+  <g>
+    <circle class="seat" cx="80" cy="831" r="30"/>
+    <text class="seat-number" x="80" y="831">55</text>
+    <circle class="seat" cx="80" cy="913" r="30"/>
+    <text class="seat-number" x="80" y="913">56</text>
+    <circle class="seat" cx="80" cy="995" r="30"/>
+    <text class="seat-number" x="80" y="995">57</text>
+    <circle class="seat" cx="80" cy="1077" r="30"/>
+    <text class="seat-number" x="80" y="1077">58</text>
+    <circle class="seat" cx="80" cy="1159" r="30"/>
+    <text class="seat-number" x="80" y="1159">59</text>
+    <circle class="seat" cx="80" cy="1241" r="30"/>
+    <text class="seat-number" x="80" y="1241">60</text>
+  </g>
+  <g>
+    <circle class="seat" cx="155" cy="831" r="30"/>
+    <text class="seat-number" x="155" y="831">43</text>
+    <circle class="seat" cx="155" cy="913" r="30"/>
+    <text class="seat-number" x="155" y="913">44</text>
+    <circle class="seat" cx="155" cy="995" r="30"/>
+    <text class="seat-number" x="155" y="995">45</text>
+    <circle class="seat" cx="155" cy="1077" r="30"/>
+    <text class="seat-number" x="155" y="1077">46</text>
+    <circle class="seat" cx="155" cy="1159" r="30"/>
+    <text class="seat-number" x="155" y="1159">47</text>
+    <circle class="seat" cx="155" cy="1241" r="30"/>
+    <text class="seat-number" x="155" y="1241">48</text>
+  </g>
+  <g>
+    <circle class="seat" cx="230" cy="831" r="30"/>
+    <text class="seat-number" x="230" y="831">31</text>
+    <circle class="seat" cx="230" cy="913" r="30"/>
+    <text class="seat-number" x="230" y="913">32</text>
+    <circle class="seat" cx="230" cy="995" r="30"/>
+    <text class="seat-number" x="230" y="995">33</text>
+    <circle class="seat" cx="230" cy="1077" r="30"/>
+    <text class="seat-number" x="230" y="1077">34</text>
+    <circle class="seat" cx="230" cy="1159" r="30"/>
+    <text class="seat-number" x="230" y="1159">35</text>
+    <circle class="seat" cx="230" cy="1241" r="30"/>
+    <text class="seat-number" x="230" y="1241">36</text>
+  </g>
+  <g>
+    <circle class="seat" cx="305" cy="831" r="30"/>
+    <text class="seat-number" x="305" y="831">19</text>
+    <circle class="seat" cx="305" cy="913" r="30"/>
+    <text class="seat-number" x="305" y="913">20</text>
+    <circle class="seat" cx="305" cy="995" r="30"/>
+    <text class="seat-number" x="305" y="995">21</text>
+    <circle class="seat" cx="305" cy="1077" r="30"/>
+    <text class="seat-number" x="305" y="1077">22</text>
+    <circle class="seat" cx="305" cy="1159" r="30"/>
+    <text class="seat-number" x="305" y="1159">23</text>
+    <circle class="seat" cx="305" cy="1241" r="30"/>
+    <text class="seat-number" x="305" y="1241">24</text>
+  </g>
+  <g>
+    <circle class="seat" cx="380" cy="831" r="30"/>
+    <text class="seat-number" x="380" y="831">7</text>
+    <circle class="seat" cx="380" cy="913" r="30"/>
+    <text class="seat-number" x="380" y="913">8</text>
+    <circle class="seat" cx="380" cy="995" r="30"/>
+    <text class="seat-number" x="380" y="995">9</text>
+    <circle class="seat" cx="380" cy="1077" r="30"/>
+    <text class="seat-number" x="380" y="1077">10</text>
+    <circle class="seat" cx="380" cy="1159" r="30"/>
+    <text class="seat-number" x="380" y="1159">11</text>
+    <circle class="seat" cx="380" cy="1241" r="30"/>
+    <text class="seat-number" x="380" y="1241">12</text>
+  </g>
+</g>
 
-  <div id="app">
-    <!-- Top Floating Header -->
-    <header>
-      <a id="return-button" href="#" class="btn-return">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="19" y1="12" x2="5" y2="12"></line>
-          <polyline points="12 19 5 12 12 5"></polyline>
-        </svg>
-        Return to Search
-      </a>
-    </header>
+    <!-- The dance floor sits in the open central aisle between the two seat groups. -->
+    <rect class="fixture dance-floor" x="406" y="540" width="168" height="240" rx="8" />
+    <text class="fixture-label floor-label" transform="translate(490 660) rotate(90)">Dance Floor</text>
 
-    <!-- Interactive SVG Canvas Viewport -->
-    <div id="viewport">
-      <svg id="map-svg" viewBox="0 0 500 900" preserveAspectRatio="xMidYMid meet">
-        <g id="map-transform-group">
-          <!-- Room Border (Portrait Orientation) -->
-          <rect class="room-border" x="20" y="20" width="460" height="860" rx="8" />
+    <!-- Stage sits immediately to the right of the floor, on the same side as the screens. -->
+    <rect class="fixture stage" x="630" y="555" width="80" height="210" rx="6" />
+    <text class="fixture-label stage-label" transform="translate(670 660) rotate(90)">8×24 Stage</text>
 
-          <!-- Orienting Marks along the RIGHT Wall -->
-          <g id="orientation-markers">
-            <!-- Symmetrical Projection Screens -->
-            <rect class="orient-bg" x="445" y="90" width="24" height="100" rx="3" />
-            <text class="orient-text" x="457" y="140" font-size="10" transform="rotate(90 457 140)">Screen</text>
+    <!-- The screens share the room’s right-side fixture line and mirror one another around its horizontal centerline. -->
+    <rect class="fixture screen" x="674" y="145" width="36" height="170" rx="5" />
+    <text class="fixture-label screen-label" transform="translate(692 230) rotate(90)">Screen</text>
 
-            <rect class="orient-bg" x="445" y="710" width="24" height="100" rx="3" />
-            <text class="orient-text" x="457" y="760" font-size="10" transform="rotate(90 457 760)">Screen</text>
-
-            <!-- Stage (Shifted Right Flush with Wall) -->
-            <rect class="orient-bg" x="400" y="310" width="45" height="140" rx="3" />
-            <text class="orient-text" x="422.5" y="380" transform="rotate(90 422.5 380)">8x24 Stage</text>
-
-            <!-- Dance Floor (Sufficient Gap from Tables) -->
-            <rect class="orient-bg" x="275" y="300" width="120" height="160" rx="4" />
-            <text class="orient-text" x="335" y="380" transform="rotate(90 335 380)">Dance Floor</text>
-          </g>
-
-          <!-- Dynamic Tables Layer -->
-          <g id="tables-layer"></g>
-        </g>
-      </svg>
-    </div>
-
-    <!-- Touch Bottom Sheet Info Card -->
-    <div class="bottom-sheet" id="bottom-sheet">
-      <div class="sheet-handle"></div>
-      <div class="sheet-content">
-        <div>
-          <div class="sheet-title" id="sheet-title">Table 1</div>
-          <div class="sheet-subtitle">Sierra Ballroom Seating</div>
-        </div>
-        <button class="close-btn" id="sheet-close">Done</button>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    // Configurable Return-to-Search URL
-    const RETURN_TO_SEARCH_URL = "https://example.com/search";
-    document.getElementById('return-button').href = RETURN_TO_SEARCH_URL;
-
-    /* 
-      Rotated Sequential Positions with Buffer Clearance from Stage & Dance floor:
-      Col 1: x = 220
-      Col 2: x = 175
-      Col 3: x = 130
-      Col 4: x = 85
-      Col 5: x = 40
-    */
-    const tablePositions = [
-      // Column 1 (x = 220)
-      { id: 1, x: 220, y: 100 }, { id: 2, x: 220, y: 150 }, { id: 3, x: 220, y: 200 }, { id: 4, x: 220, y: 250 }, { id: 5, x: 220, y: 300 }, { id: 6, x: 220, y: 350 },
-      { id: 7, x: 220, y: 550 }, { id: 8, x: 220, y: 600 }, { id: 9, x: 220, y: 650 }, { id: 10, x: 220, y: 700 }, { id: 11, x: 220, y: 750 }, { id: 12, x: 220, y: 800 },
-
-      // Column 2 (x = 175)
-      { id: 13, x: 175, y: 100 }, { id: 14, x: 175, y: 150 }, { id: 15, x: 175, y: 200 }, { id: 16, x: 175, y: 250 }, { id: 17, x: 175, y: 300 }, { id: 18, x: 175, y: 350 },
-      { id: 19, x: 175, y: 550 }, { id: 20, x: 175, y: 600 }, { id: 21, x: 175, y: 650 }, { id: 22, x: 175, y: 700 }, { id: 23, x: 175, y: 750 }, { id: 24, x: 175, y: 800 },
-
-      // Column 3 (x = 130)
-      { id: 25, x: 130, y: 100 }, { id: 26, x: 130, y: 150 }, { id: 27, x: 130, y: 200 }, { id: 28, x: 130, y: 250 }, { id: 29, x: 130, y: 300 }, { id: 30, x: 130, y: 350 },
-      { id: 31, x: 130, y: 550 }, { id: 32, x: 130, y: 600 }, { id: 33, x: 130, y: 650 }, { id: 34, x: 130, y: 700 }, { id: 35, x: 130, y: 750 }, { id: 36, x: 130, y: 800 },
-
-      // Column 4 (x = 85)
-      { id: 37, x: 85, y: 100 }, { id: 38, x: 85, y: 150 }, { id: 39, x: 85, y: 200 }, { id: 40, x: 85, y: 250 }, { id: 41, x: 85, y: 300 }, { id: 42, x: 85, y: 350 },
-      { id: 43, x: 85, y: 550 }, { id: 44, x: 85, y: 600 }, { id: 45, x: 85, y: 650 }, { id: 46, x: 85, y: 700 }, { id: 47, x: 85, y: 750 }, { id: 48, x: 85, y: 800 },
-
-      // Column 5 (x = 40)
-      { id: 49, x: 40, y: 100 }, { id: 50, x: 40, y: 150 }, { id: 51, x: 40, y: 200 }, { id: 52, x: 40, y: 250 }, { id: 53, x: 40, y: 300 }, { id: 54, x: 40, y: 350 },
-      { id: 55, x: 40, y: 550 }, { id: 56, x: 40, y: 600 }, { id: 57, x: 40, y: 650 }, { id: 58, x: 40, y: 700 }, { id: 59, x: 40, y: 750 }, { id: 60, x: 40, y: 800 }
-    ];
-
-    // Render Tables
-    const tablesLayer = document.getElementById('tables-layer');
-
-    tablePositions.forEach(table => {
-      const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-      g.setAttribute('class', 'table-group');
-      g.setAttribute('id', `table-${table.id}`);
-
-      g.innerHTML = `
-        <circle class="pulse-ring" cx="${table.x}" cy="${table.y}" r="18" />
-        <circle class="table-circle" cx="${table.x}" cy="${table.y}" r="15" />
-        <text class="table-number" x="${table.x}" y="${table.y}">${table.id}</text>
-      `;
-
-      g.addEventListener('click', () => selectTable(table.id));
-      tablesLayer.appendChild(g);
-    });
-
-    // Viewport & Scaling Engine (Always Centers Full Diagram)
-    const viewport = document.getElementById('viewport');
-    const transformGroup = document.getElementById('map-transform-group');
-    const VB_WIDTH = 500;
-    const VB_HEIGHT = 900;
-
-    let scale = 1;
-    let pointX = 0;
-    let pointY = 0;
-    let startX = 0;
-    let startY = 0;
-    let isPanning = false;
-
-    function setTransform() {
-      transformGroup.setAttribute('transform', `translate(${pointX}, ${pointY}) scale(${scale})`);
-    }
-
-    function resetView() {
-      const rect = viewport.getBoundingClientRect();
-      const scaleX = rect.width / VB_WIDTH;
-      const scaleY = rect.height / VB_HEIGHT;
-      
-      // Auto-fit diagram centered within viewport bounds
-      scale = Math.min(scaleX, scaleY);
-      pointX = (rect.width - (VB_WIDTH * scale)) / 2;
-      pointY = (rect.height - (VB_HEIGHT * scale)) / 2;
-      setTransform();
-    }
-
-    window.addEventListener('resize', resetView);
-    resetView();
-
-    // Touch / Pointer Drag
-    viewport.addEventListener('pointerdown', (e) => {
-      if (e.target.closest('header')) return;
-      isPanning = true;
-      startX = e.clientX - pointX;
-      startY = e.clientY - pointY;
-      viewport.setPointerCapture(e.pointerId);
-    });
-
-    viewport.addEventListener('pointermove', (e) => {
-      if (!isPanning) return;
-      pointX = e.clientX - startX;
-      pointY = e.clientY - startY;
-      setTransform();
-    });
-
-    viewport.addEventListener('pointerup', (e) => {
-      isPanning = false;
-      try { viewport.releasePointerCapture(e.pointerId); } catch(err) {}
-    });
-
-    // Touch Pinch Zoom
-    let initialPinchDist = null;
-    let initialScale = 1;
-
-    viewport.addEventListener('touchstart', (e) => {
-      if (e.touches.length === 2) {
-        isPanning = false;
-        initialPinchDist = Math.hypot(
-          e.touches[0].clientX - e.touches[1].clientX,
-          e.touches[0].clientY - e.touches[1].clientY
-        );
-        initialScale = scale;
-      }
-    });
-
-    viewport.addEventListener('touchmove', (e) => {
-      if (e.touches.length === 2 && initialPinchDist) {
-        const dist = Math.hypot(
-          e.touches[0].clientX - e.touches[1].clientX,
-          e.touches[0].clientY - e.touches[1].clientY
-        );
-        const factor = dist / initialPinchDist;
-        scale = Math.min(Math.max(initialScale * factor, 0.4), 4);
-        setTransform();
-      }
-    });
-
-    viewport.addEventListener('touchend', () => {
-      initialPinchDist = null;
-    });
-
-    // Table Selection & Focus Zoom
-    let selectedId = null;
-    const sheet = document.getElementById('bottom-sheet');
-    const sheetTitle = document.getElementById('sheet-title');
-
-    function selectTable(id) {
-      if (selectedId) {
-        const prev = document.getElementById(`table-${selectedId}`);
-        if (prev) prev.classList.remove('selected');
-      }
-
-      selectedId = id;
-      const target = tablePositions.find(t => t.id === id);
-
-      if (target) {
-        const el = document.getElementById(`table-${id}`);
-        if (el) el.classList.add('selected');
-
-        const rect = viewport.getBoundingClientRect();
-        scale = 1.6;
-        pointX = (rect.width / 2) - (target.x * scale);
-        pointY = (rect.height / 2) - (target.y * scale);
-        setTransform();
-
-        sheetTitle.textContent = `Table ${id}`;
-        sheet.classList.add('open');
-      }
-    }
-
-    document.getElementById('sheet-close').addEventListener('click', () => {
-      sheet.classList.remove('open');
-    });
-  </script>
+    <rect class="fixture screen" x="674" y="1005" width="36" height="170" rx="5" />
+    <text class="fixture-label screen-label" transform="translate(692 1090) rotate(90)">Screen</text>
+    </g>
+  </svg>
+</main>
 </body>
 </html>
