@@ -1,0 +1,227 @@
+id,name,table,tableName,seat,notes
+36,"PHAN, DANA T.",1,Table 1,Seat 1,Sergeant
+43,"TORRES, JOSHUA ",1,Table 1,Seat 2,Guest
+62,"WORSHAM, CHANDLER J.",1,Table 1,Seat 3,Sergeant
+38,"ALI, NATNAEL Y.",1,Table 1,Seat 4,Sergeant
+74,"THARP, JUSTIN L.",1,Table 1,Seat 5,Sergeant
+75,MRS. THARP,1,Table 1,Seat 6,Guest
+82,"BAUCOM, GARRETT D.",1,Table 1,Seat 7,Sergeant
+92,"HERNANDEZ, ROBERTO",1,Table 1,Seat 7,Sergeant
+93,HEIDI ROGRIGUEZ,1,Table 1,Seat 8,Guest
+37,"HURST, ZACHARY J.",1,Table 1,Seat 10,Sergeant
+60,"NUNEZ, FRANCISCO",2,Table 2,Seat 1,Corporal
+40,"AITKEN, RYAN C.",2,Table 2,Seat 2,Corporal
+41,ABIGAIL AITKEN,2,Table 2,Seat 3,Guest
+35,"HERRERA, JULIAN R.",2,Table 2,Seat 4,Corporal
+51,"ESPIDIO, CHRISTOPHE",2,Table 2,Seat 5,Corporal
+52,"FARIASCHAVEZ, ADOLFO",2,Table 2,Seat 6,Corporal
+58,"LUQUINJIMENEZ, JORGE A.",2,Table 2,Seat 7,Corporal
+39,GENESIS LUQUIN,2,Table 2,Seat 8,Guest
+94,"MOLANO, JAIR",2,Table 2,Seat 9,Corporal
+76,"HANEY, SHANE R.",2,Table 2,Seat 10,Corporal
+95,"PEREZFLORES, JAVIER A.",3,Table 3,Seat 1,Corporal
+96,MICHELLE RIVERAPEREZ,3,Table 3,Seat 2,Guest
+59,"STEPHENS, DANIEL A.",3,Table 3,Seat 3,Corporal
+69,"SYLVESTER, ZYAN B.",3,Table 3,Seat 4,Lance Corporal
+66,"CORNEJORODRIGUEZ, OSVALDO",3,Table 3,Seat 5,Corporal
+68,"LOPEZREYES, FLAVIO A.",3,Table 3,Seat 6,Corporal
+65,"ACOSTADIAZ, DANIEL I.",3,Table 3,Seat 7,Lance Corporal
+64,"REED, RYAN Z.",3,Table 3,Seat 8,Lance Corporal
+33,"MINAI, PAUL S.",4,Table 4,Seat 1,Master Sergeant
+34,MRS. MINAI,4,Table 4,Seat 2,Guest
+31,"CROCHET, LANE O.",4,Table 4,Seat 3,First Lieutenant
+32,"GEIBEL, KATHERINE",4,Table 4,Seat 4,Captain
+57,"HJERPE, ZACHARY L.",4,Table 4,Seat 5,Staff Sergeant
+81,"MINCZ, CHARLES R.",4,Table 4,Seat 6,Staff Sergeant
+226, ELLAH HINGSTON-MCNIELLY,4,Table 4,Seat 7,Guest
+70,"TERIFAY, JACOB G.",4,Table 4,Seat 8,Staff Sergeant
+71,SOFIA LEDUC,4,Table 4,Seat 9,Guest
+73,JOHN ARMER,4,Table 4,Seat 10,Guest
+20,"KRULAK, BRIAN C.",5,Table 5,Seat 1,Captain
+21,DEL REY MICHELLE,5,Table 5,Seat 2,Guest
+129,"MILES JR, RICKI C.",5,Table 5,Seat 3,Master Sergeant
+130,SHELBY MILES,5,Table 5,Seat 4,Guest
+133,"WALKER II, J D.",5,Table 5,Seat 5,Major
+134,KAYLA WALKER,5,Table 5,Seat 6,Guest
+17,"TOTENO, JEREMY J.",5,Table 5,Seat 7,Master Sergeant
+205,"KARLE, JAMES W.",5,Table 5,Seat 8,Captain
+116,"MCKELVEY, DARIUS A.",5,Table 5,Seat 9,Master Sergeant
+117,DANIELLE MERRYWEATHER,5,Table 5,Seat 10,Guest
+100,"MAERLING, JOHN J.",6,Table 6,Seat 1,Major
+101,MRS. MAERLING ,6,Table 6,Seat 2,Guest
+102,"MARTINEZ, ROBERTO D.",6,Table 6,Seat 3,First Sergeant
+103,FLOR MARTINEZ,6,Table 6,Seat 4,Guest
+104,1SGT MARTINEZ,6,Table 6,Seat 5,Guest
+105,1SGT MARTINEZ,6,Table 6,Seat 6,Guest
+113,"FERRARI, DEREK",6,Table 6,Seat 7,Gunnery Sergeant
+18,"TIEDTKE, JASMIN",6,Table 6,Seat 8,Staff Sergeant
+202,"DAVID, DAMIAN J.",6,Table 6,Seat 8,Staff Sergeant
+140,"EAST, EVERETT V.",6,Table 6,Seat 9,Major
+141,DANIELLE EAST,6,Table 6,Seat 10,Guest
+121,"MEDINA, ESTEVAN S.",7,Table 7,Seat 1,Lance Corporal
+122,MISS MEDINA,7,Table 7,Seat 2,Guest
+123,"HILL, KAIDEN S.",7,Table 7,Seat 3,Lance Corporal
+124,TORRANCE ORTIZ,7,Table 7,Seat 4,Guest
+131,"NELSON, JADEN S.",7,Table 7,Seat 5,Lance Corporal
+132,JULIANNA PICO,7,Table 7,Seat 6,Guest
+139,"CARTER, ZACHARY R.",7,Table 7,Seat 7,Lance Corporal
+143,"RODRIGUEZ, JESUS A.",7,Table 7,Seat 8,Lance Corporal
+25,"VERA, CEASAR O.",7,Table 7,Seat 9,Lance Corporal
+126,"HOLMES, CODY",8,Table 8,Seat 1,Sergeant
+142,"MORSE, MAXWELL M.",8,Table 8,Seat 2,Sergeant
+7,"PERKINS, ROSE M.",8,Table 8,Seat 3,Sergeant
+8, KASSANDRA VITECAMPOVERDE,8,Table 8,Seat 4,Guest
+89,"HAYNES, AQEEL S.",8,Table 8,Seat 5,Sergeant
+67,"LOPEZ, ANTHONY M.",8,Table 8,Seat 6,Sergeant
+125,"JONES, JEFFREY D.",8,Table 8,Seat 7,Staff Sergeant
+200,"CALDWELL, ANTOINE D.",8,Table 8,Seat 9,Staff Sergeant
+201,EMMA HORNING,8,Table 8,Seat 10,Guest
+185,"STUART, AARON E.",9,Table 9,Seat 1,Private First Class
+186,"DARLING, LOGAN G.",9,Table 9,Seat 2,Lance Corporal
+187,NEVAEH DARLING,9,Table 9,Seat 3,Guest
+191,"QUINONEZGOMEZ, JORDAN U.",9,Table 9,Seat 4,Lance Corporal
+194,"SAUER, JONATHAN J.",9,Table 9,Seat 5,Private First Class
+195,"TIDWELL, EVAN J.",9,Table 9,Seat 6,Corporal
+196,PIPER LINSON,9,Table 9,Seat 7,Guest
+12,"MURRAY, IAN T.",9,Table 9,Seat 9,Private First Class
+184,"LA, AARON",10,Table 10,Seat 1,Sergeant
+183,"SANCHEZFIGUEROA, SAMUEL",10,Table 10,Seat 2,Corporal
+188,"GIDEON, SAIMON",10,Table 10,Seat 3,Sergeant
+189,CATLINE GIDEON,10,Table 10,Seat 4,Guest
+190,JULIE GARCIA,10,Table 10,Seat 5,Guest
+192,"REESE, BRANDON L.",10,Table 10,Seat 6,Chief Warrant Officer 2
+193, ABBY REESE ,10,Table 10,Seat 7,Guest
+197,"VIEAU, MATTHIAS D.",10,Table 10,Seat 8,Corporal
+198,KENDAL CHANG,10,Table 10,Seat 9,Guest
+26,"DEENAH, DAJANI J.",10,Table 10,Seat 10,Corporal
+15,"NUNEZMARTINEZ, JOSELYN",11,Table 11,Seat 1,Corporal
+16,  VELAZCO ROBERTO,11,Table 11,Seat 2,Guest
+203,"KAPP, ZANA L.",11,Table 11,Seat 3,Lance Corporal
+204,JAZMYNE STEPHENS,11,Table 11,Seat 4,Guest
+9,"LUNA, NESTOR A.",11,Table 11,Seat 5,Lance Corporal
+10, MRS. LUNA,11,Table 11,Seat 6,Guest
+13,"TRINH, TRISTON J.",11,Table 11,Seat 7,Lance Corporal
+14,GOCAN JAVON,11,Table 11,Seat 8,Private First Class
+11,"MUAN, CIN",11,Table 11,Seat 9,Lance Corporal
+206,"HARRISON, RAYSHAWN O.",11,Table 11,Seat 10,Lance Corporal
+72,"LUJAN, MICAH K.",13,Table 13,Seat 1,Private First Class
+50,AZA BACON ,13,Table 13,Seat 2,Guest
+88,"GREESON, JACOB M.",13,Table 13,Seat 3,Lance Corporal
+77,"DEJESUS, NATHANIEL R.",13,Table 13,Seat 4,Corporal
+78,KYRIAKI LEVRIADIS,13,Table 13,Seat 5,Guest
+79,AMALYA AMETOVA,13,Table 13,Seat 6,Guest
+90,"HEMPHILL III, ROBERT E.",13,Table 13,Seat 7,Corporal
+91,IMANI HAYES,13,Table 13,Seat 8,Guest
+97,"REYES, ERICK A.",13,Table 13,Seat 9,Lance Corporal
+98,RUBY RAMIREZ,13,Table 13,Seat 10,Guest
+48,"DIRCIO, FRANCISCO J.",14,Table 14,Seat 1,Lance Corporal
+49,KRYSTAL SOTELO,14,Table 14,Seat 2,Guest
+55,"HERNANDEZ, ISAAC V.",14,Table 14,Seat 3,Lance Corporal
+56,ALANI MURRIJO,14,Table 14,Seat 4,Guest
+99,"SMITH, PHAJON P.",14,Table 14,Seat 5,Lance Corporal
+63,"YOUNGBIRD, DANIEL D.",14,Table 14,Seat 6,Lance Corporal
+84,"GROVES, MATTHEW C.",14,Table 14,Seat 7,Private First Class
+54,TABITHA EGAN,14,Table 14,Seat 8,Guest
+61,"VILLANUEVA, RICARDO D.",14,Table 14,Seat 9,Lance Corporal
+53,"FILOZOV, EVAN V.",14,Table 14,Seat 10,Private First Class
+42,"ALVAREZ, GABRIEL S.",15,Table 15,Seat 1,Lance Corporal
+44,"ANDREANI, ANGELO G.",15,Table 15,Seat 2,Lance Corporal
+45,JAMIE ANDREANI,15,Table 15,Seat 3,Guest
+46,"ARRAZOLALOZANO, ISAAC A.",15,Table 15,Seat 4,Lance Corporal
+47,"CARDENAS, ABRAHAN",15,Table 15,Seat 5,Private First Class
+80,"PORTILLOTOBAR, VALERIA",15,Table 15,Seat 6,Lance Corporal
+83,"GONZALEZ, IVAN O.",15,Table 15,Seat 7,Lance Corporal
+85,DOMINIQUE SAUCEDA,15,Table 15,Seat 8,Guest
+86,"GONZALEZ, BRANDON",15,Table 15,Seat 9,Lance Corporal
+87,VALERIE LEON,15,Table 15,Seat 10,Guest
+1,GONZALES ANGLO,16,Table 16,Seat 1,Petty Officer Third Class
+2, ERICA GONZALES,16,Table 16,Seat 2,Guest
+5,"WYND, JOSEPH A.",16,Table 16,Seat 3,Petty Officer Third Class
+144,"BARRETT, MARON L.",16,Table 16,Seat 4,"Lieutenant, USN"
+145,SUNNY BARRETT,16,Table 16,Seat 5,Guest
+6,"UNDERBERG, JONATHAN R.",16,Table 16,Seat 6,"Lieutenant Junior Grade, USN"
+3,GARZA JULIAN,16,Table 16,Seat 7,Petty Officer Second Class
+4, SARAH GARZA,16,Table 16,Seat 8,Guest
+106,"LITTLEJOHN, DWAYNE M.",18,Table 18,Seat 1,Lieutenant Colonel
+107,CHANEL LITTLEJOHN,18,Table 18,Seat 2,Guest
+108,CHRISTOPHER LEE,18,Table 18,Seat 3,Guest
+109,KAMALI LEE,18,Table 18,Seat 4,Guest
+110,"BROWN, MITCHELL T.",18,Table 18,Seat 5,Sergeant Major
+111,Adrienne R. Brown,18,Table 18,Seat 6,Guest
+29,BLUE DIAMOND NINE,18,Table 18,Seat 7,Sergeant Major
+30,MRS SOTORODRIGUEZ,18,Table 18,Seat 8,Guest
+23,"WOOD, SCOTT K.",18,Table 18,Seat 9,Major
+24, MRS. WOOD ,18,Table 18,Seat 10,Guest
+223,GARRITY LOGAN R.,24,Table 24,Seat 1,Private First Class
+224,ARGUETA JEFFERSON ,24,Table 24,Seat 2,Private First Class
+219,HARRIS BRANDON,24,Table 24,Seat 3,Private First Class
+220,GARCIA JUAN N.,24,Table 24,Seat 4,Private First Class
+221,MARSHALL OWEN L.,24,Table 24,Seat 5,Private First Class
+222,JOHNLKWECHEGHI MICHAEL ,24,Table 24,Seat 6,Private First Class
+218,"SABILLON, KEVIN J.",24,Table 24,Seat 7,Private First Class
+118,"BERMODES JR, DERIK D.",24,Table 24,Seat 8,Private First Class
+147,"IBARRA, ETHAN N.",24,Table 24,Seat 9,Lance Corporal
+19,"LOPEZSALAZAR, ANTONIO",24,Table 24,Seat 10,Lance Corporal
+27,"BECKOWSKI, MASON E.",25,Table 25,Seat 1,Corporal
+28,ZOIE CORONADO ,25,Table 25,Seat 2,Guest
+209,"TERRACCIANOARIAS, JUAN I.",25,Table 25,Seat 3,Lance Corporal
+210,"ABRERA, JAVIER D.",25,Table 25,Seat 4,Lance Corporal
+211, RAFAEL ABRERA ,25,Table 25,Seat 5,Guest
+212,"CHROMCHAK, BRADLEY A.",25,Table 25,Seat 6,Corporal
+213,FAYE BUNKET,25,Table 25,Seat 7,Guest
+214,"PARRAVEGA, SARAI",25,Table 25,Seat 8,Lance Corporal
+215,"SHARPE, CONNOR L.",25,Table 25,Seat 9,Lance Corporal
+146,"BARBOZA, MANUEL",25,Table 25,Seat 10,Lance Corporal
+207,"KOCH, SETH C.",55,Table 55,Seat 1,Second Lieutenant
+208,FAITH PAYNE,55,Table 55,Seat 2,Guest
+199,"MOCK, GABRIEL O.",55,Table 55,Seat 3,Second Lieutenant
+135,"WRIGHT III, CHARLES E.",55,Table 55,Seat 4,Second Lieutenant
+136,"WRIGHT III, CHARLES E. (GUEST)",55,Table 55,Seat 5,Guest
+148,"ZIAJACOB, ASHRAF A.",56,Table 56,Seat 1,Master Sergeant
+149,"SHAHNAZ, ZIAJACOB",56,Table 56,Seat 2,Guest
+150,"AZMAT, ZIAJACOB",56,Table 56,Seat 3,Guest
+177,"ROJAS, CARLOS A.",56,Table 56,Seat 4,Lance Corporal
+178,"SANCHEZVALENZUELA, ALAN A.",56,Table 56,Seat 5,Lance Corporal
+168,"MALDONADO, GAVIN R.",56,Table 56,Seat 6,Lance Corporal
+165,"KERTESZ, MICHAEL C.",56,Table 56,Seat 7,Lance Corporal
+225,"SANCHEZVALENZUELA, ALAN A.",56,Table 56,Seat 8,Guest
+171,"RAMOS, MATTHEW J.",57,Table 57,Seat 1,Lance Corporal
+172, MELANIEJAI RAMOS ,57,Table 57,Seat 2,Guest
+161,"JOHNSON, CHARLES A.",57,Table 57,Seat 3,Corporal
+162, DESIRAE LYNN CAMPBELL,57,Table 57,Seat 4,Guest
+166,"KOZMA, JACK S.",57,Table 57,Seat 5,Lance Corporal
+167, ARRIANA KOZMA,57,Table 57,Seat 6,Guest
+173,"JAHN, JOSHUA D.",57,Table 57,Seat 7,Corporal
+174,TATIANA TILLERY,57,Table 57,Seat 8,Guest
+175,"RODRIGUEZ, HOMERO",57,Table 57,Seat 9,Lance Corporal
+176, IRENE NAVARRO,57,Table 57,Seat 10,Guest
+159,"GROSS, AUSTIN R.",58,Table 58,Seat 1,Private First Class
+160, CHLOE BENSCOTER,58,Table 58,Seat 2,Guest
+153,"BRAY, ALYSSA R.",58,Table 58,Seat 3,Corporal
+154, JAX SEEDARNEE,58,Table 58,Seat 4,Guest
+169,"PELAEZ, ANTONIO",58,Table 58,Seat 5,Private First Class
+170, KARLA C FERNADEZ FAIELLO ,58,Table 58,Seat 6,Guest
+181,"YARN, MALIK A.",58,Table 58,Seat 7,Corporal
+182, TONI MCWILLIAMS,58,Table 58,Seat 8,Guest
+179,"TORRES, GABRIEL",59,Table 59,Seat 1,Corporal
+180, ESMERALDA TORRES,59,Table 59,Seat 2,Guest
+151,"BROWNING, DUSTIN K.",59,Table 59,Seat 3,Lance Corporal
+152, LEAIRA MARTIN,59,Table 59,Seat 4,Guest
+163,"KEIPER, MADYSEN G.",59,Table 59,Seat 5,Corporal
+164, DYLAN DEASON ,59,Table 59,Seat 6,Guest
+155,"DIAZ, CHRISTOPHE O.",59,Table 59,Seat 7,Corporal
+156, KELBY SANTIAGO,59,Table 59,Seat 8,Guest
+157, ULISES DIAZ,59,Table 59,Seat 9,Guest
+158, GISELA GARCIA GARCIA ,59,Table 59,Seat 10,Guest
+137,"YANCEY, SHANE J.",60,Table 60,Seat 1,First Lieutenant
+138,LEXI JOHNSON,60,Table 60,Seat 2,Guest
+114,"LEE, DEVIN J.",60,Table 60,Seat 3,First Lieutenant
+115,MAX DAMEWOOD,60,Table 60,Seat 4,Guest
+120,AIDAN WELLMAN,60,Table 60,Seat 5,Guest
+119,"WELLMAN, RACHEL E.",60,Table 60,Seat 6,Second Lieutenant
+216,"EHRENBERGER, KEVIN J.",60,Table 60,Seat 7,First Lieutenant
+217,ABBY CLARK,60,Table 60,Seat 8,Guest
+112,"NELSON, JOSEPH N.",60,Table 60,Seat 9,Second Lieutenant
+22,"SAVINO, JENNA D.",60,Table 60,Seat 10,Second Lieutenant
+128,ADDISON BOGART,N/A,Table N/A,Seat N/A,Guest
+127,"LANGE, JEREMIAH",N/A,Table N/A,Seat N/A,Sergeant
