@@ -84,6 +84,9 @@
       background-color: #0d1117;
       overflow: hidden;
       position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     #viewport:active {
@@ -131,7 +134,7 @@
 
     .table-number {
       fill: #f3f4f6;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 700;
       text-anchor: middle;
       dominant-baseline: central;
@@ -162,12 +165,12 @@
 
     @keyframes pulse {
       0% {
-        r: 22px;
+        r: 18px;
         opacity: 0.9;
         stroke-width: 4px;
       }
       100% {
-        r: 45px;
+        r: 38px;
         opacity: 0;
         stroke-width: 1px;
       }
@@ -247,28 +250,27 @@
 
     <!-- Interactive SVG Canvas Viewport -->
     <div id="viewport">
-      <svg id="map-svg" viewBox="0 0 500 900">
+      <svg id="map-svg" viewBox="0 0 500 900" preserveAspectRatio="xMidYMid meet">
         <g id="map-transform-group">
           <!-- Room Border (Portrait Orientation) -->
-          <rect class="room-border" x="25" y="40" width="450" height="840" rx="8" />
+          <rect class="room-border" x="20" y="20" width="460" height="860" rx="8" />
 
           <!-- Orienting Marks along the RIGHT Wall -->
           <g id="orientation-markers">
-            <!-- Top Screen (Right Wall, Upper) -->
-            <rect class="orient-bg" x="438" y="100" width="22" height="75" rx="3" />
-            <text class="orient-text" x="449" y="137.5" font-size="10" transform="rotate(90 449 137.5)">Screen</text>
+            <!-- Symmetrical Projection Screens -->
+            <rect class="orient-bg" x="445" y="90" width="24" height="100" rx="3" />
+            <text class="orient-text" x="457" y="140" font-size="10" transform="rotate(90 457 140)">Screen</text>
 
-            <!-- Bottom Screen (Right Wall, Lower) -->
-            <rect class="orient-bg" x="438" y="700" width="22" height="75" rx="3" />
-            <text class="orient-text" x="449" y="737.5" font-size="10" transform="rotate(90 449 737.5)">Screen</text>
+            <rect class="orient-bg" x="445" y="710" width="24" height="100" rx="3" />
+            <text class="orient-text" x="457" y="760" font-size="10" transform="rotate(90 457 760)">Screen</text>
 
-            <!-- Stage (Right Wall, Center Top) -->
-            <rect class="orient-bg" x="390" y="320" width="40" height="140" rx="3" />
-            <text class="orient-text" x="410" y="390" transform="rotate(90 410 390)">8x24 Stage</text>
+            <!-- Stage (Shifted Right Flush with Wall) -->
+            <rect class="orient-bg" x="400" y="310" width="45" height="140" rx="3" />
+            <text class="orient-text" x="422.5" y="380" transform="rotate(90 422.5 380)">8x24 Stage</text>
 
-            <!-- Dance Floor (Right Wall, Center Bottom) -->
-            <rect class="orient-bg" x="252" y="310" width="130" height="160" rx="4" />
-            <text class="orient-text" x="317" y="390" transform="rotate(90 317 390)">Dance Floor</text>
+            <!-- Dance Floor (Sufficient Gap from Tables) -->
+            <rect class="orient-bg" x="275" y="300" width="120" height="160" rx="4" />
+            <text class="orient-text" x="335" y="380" transform="rotate(90 335 380)">Dance Floor</text>
           </g>
 
           <!-- Dynamic Tables Layer -->
@@ -296,33 +298,33 @@
     document.getElementById('return-button').href = RETURN_TO_SEARCH_URL;
 
     /* 
-      Rotated 90° Clockwise Sequential Ordering:
-      - Column 1 (x = 350, right-most near stage): 1-6 (Top Block) -> DANCE FLOOR GAP -> 7-12 (Bottom Block)
-      - Column 2 (x = 290): 13-18 (Top Block) -> DANCE FLOOR GAP -> 19-24 (Bottom Block)
-      - Column 3 (x = 230): 25-30 (Top Block) -> DANCE FLOOR GAP -> 31-36 (Bottom Block)
-      - Column 4 (x = 170): 37-42 (Top Block) -> DANCE FLOOR GAP -> 43-48 (Bottom Block)
-      - Column 5 (x = 110): 49-54 (Top Block) -> DANCE FLOOR GAP -> 55-60 (Bottom Block)
+      Rotated Sequential Positions with Buffer Clearance from Stage & Dance floor:
+      Col 1: x = 220
+      Col 2: x = 175
+      Col 3: x = 130
+      Col 4: x = 85
+      Col 5: x = 40
     */
     const tablePositions = [
-      // Column 1 (x = 350)
-      { id: 1, x: 350, y: 120 }, { id: 2, x: 350, y: 170 }, { id: 3, x: 350, y: 220 }, { id: 4, x: 350, y: 270 }, { id: 5, x: 350, y: 320 }, { id: 6, x: 350, y: 370 },
-      { id: 7, x: 350, y: 550 }, { id: 8, x: 350, y: 600 }, { id: 9, x: 350, y: 650 }, { id: 10, x: 350, y: 700 }, { id: 11, x: 350, y: 750 }, { id: 12, x: 350, y: 800 },
+      // Column 1 (x = 220)
+      { id: 1, x: 220, y: 100 }, { id: 2, x: 220, y: 150 }, { id: 3, x: 220, y: 200 }, { id: 4, x: 220, y: 250 }, { id: 5, x: 220, y: 300 }, { id: 6, x: 220, y: 350 },
+      { id: 7, x: 220, y: 550 }, { id: 8, x: 220, y: 600 }, { id: 9, x: 220, y: 650 }, { id: 10, x: 220, y: 700 }, { id: 11, x: 220, y: 750 }, { id: 12, x: 220, y: 800 },
 
-      // Column 2 (x = 290)
-      { id: 13, x: 290, y: 120 }, { id: 14, x: 290, y: 170 }, { id: 15, x: 290, y: 220 }, { id: 16, x: 290, y: 270 }, { id: 17, x: 290, y: 320 }, { id: 18, x: 290, y: 370 },
-      { id: 19, x: 290, y: 550 }, { id: 20, x: 290, y: 600 }, { id: 21, x: 290, y: 650 }, { id: 22, x: 290, y: 700 }, { id: 23, x: 290, y: 750 }, { id: 24, x: 290, y: 800 },
+      // Column 2 (x = 175)
+      { id: 13, x: 175, y: 100 }, { id: 14, x: 175, y: 150 }, { id: 15, x: 175, y: 200 }, { id: 16, x: 175, y: 250 }, { id: 17, x: 175, y: 300 }, { id: 18, x: 175, y: 350 },
+      { id: 19, x: 175, y: 550 }, { id: 20, x: 175, y: 600 }, { id: 21, x: 175, y: 650 }, { id: 22, x: 175, y: 700 }, { id: 23, x: 175, y: 750 }, { id: 24, x: 175, y: 800 },
 
-      // Column 3 (x = 230)
-      { id: 25, x: 230, y: 120 }, { id: 26, x: 230, y: 170 }, { id: 27, x: 230, y: 220 }, { id: 28, x: 230, y: 270 }, { id: 29, x: 230, y: 320 }, { id: 30, x: 230, y: 370 },
-      { id: 31, x: 230, y: 550 }, { id: 32, x: 230, y: 600 }, { id: 33, x: 230, y: 650 }, { id: 34, x: 230, y: 700 }, { id: 35, x: 230, y: 750 }, { id: 36, x: 230, y: 800 },
+      // Column 3 (x = 130)
+      { id: 25, x: 130, y: 100 }, { id: 26, x: 130, y: 150 }, { id: 27, x: 130, y: 200 }, { id: 28, x: 130, y: 250 }, { id: 29, x: 130, y: 300 }, { id: 30, x: 130, y: 350 },
+      { id: 31, x: 130, y: 550 }, { id: 32, x: 130, y: 600 }, { id: 33, x: 130, y: 650 }, { id: 34, x: 130, y: 700 }, { id: 35, x: 130, y: 750 }, { id: 36, x: 130, y: 800 },
 
-      // Column 4 (x = 170)
-      { id: 37, x: 170, y: 120 }, { id: 38, x: 170, y: 170 }, { id: 39, x: 170, y: 220 }, { id: 40, x: 170, y: 270 }, { id: 41, x: 170, y: 320 }, { id: 42, x: 170, y: 370 },
-      { id: 43, x: 170, y: 550 }, { id: 44, x: 170, y: 600 }, { id: 45, x: 170, y: 650 }, { id: 46, x: 170, y: 700 }, { id: 47, x: 170, y: 750 }, { id: 48, x: 170, y: 800 },
+      // Column 4 (x = 85)
+      { id: 37, x: 85, y: 100 }, { id: 38, x: 85, y: 150 }, { id: 39, x: 85, y: 200 }, { id: 40, x: 85, y: 250 }, { id: 41, x: 85, y: 300 }, { id: 42, x: 85, y: 350 },
+      { id: 43, x: 85, y: 550 }, { id: 44, x: 85, y: 600 }, { id: 45, x: 85, y: 650 }, { id: 46, x: 85, y: 700 }, { id: 47, x: 85, y: 750 }, { id: 48, x: 85, y: 800 },
 
-      // Column 5 (x = 110)
-      { id: 49, x: 110, y: 120 }, { id: 50, x: 110, y: 170 }, { id: 51, x: 110, y: 220 }, { id: 52, x: 110, y: 270 }, { id: 53, x: 110, y: 320 }, { id: 54, x: 110, y: 370 },
-      { id: 55, x: 110, y: 550 }, { id: 56, x: 110, y: 600 }, { id: 57, x: 110, y: 650 }, { id: 58, x: 110, y: 700 }, { id: 59, x: 110, y: 750 }, { id: 60, x: 110, y: 800 }
+      // Column 5 (x = 40)
+      { id: 49, x: 40, y: 100 }, { id: 50, x: 40, y: 150 }, { id: 51, x: 40, y: 200 }, { id: 52, x: 40, y: 250 }, { id: 53, x: 40, y: 300 }, { id: 54, x: 40, y: 350 },
+      { id: 55, x: 40, y: 550 }, { id: 56, x: 40, y: 600 }, { id: 57, x: 40, y: 650 }, { id: 58, x: 40, y: 700 }, { id: 59, x: 40, y: 750 }, { id: 60, x: 40, y: 800 }
     ];
 
     // Render Tables
@@ -334,8 +336,8 @@
       g.setAttribute('id', `table-${table.id}`);
 
       g.innerHTML = `
-        <circle class="pulse-ring" cx="${table.x}" cy="${table.y}" r="22" />
-        <circle class="table-circle" cx="${table.x}" cy="${table.y}" r="17" />
+        <circle class="pulse-ring" cx="${table.x}" cy="${table.y}" r="18" />
+        <circle class="table-circle" cx="${table.x}" cy="${table.y}" r="15" />
         <text class="table-number" x="${table.x}" y="${table.y}">${table.id}</text>
       `;
 
@@ -343,7 +345,7 @@
       tablesLayer.appendChild(g);
     });
 
-    // Viewport & Scaling Engine
+    // Viewport & Scaling Engine (Always Centers Full Diagram)
     const viewport = document.getElementById('viewport');
     const transformGroup = document.getElementById('map-transform-group');
     const VB_WIDTH = 500;
@@ -365,11 +367,10 @@
       const scaleX = rect.width / VB_WIDTH;
       const scaleY = rect.height / VB_HEIGHT;
       
-      // Auto-fit diagram to fill maximum vertical screen space
-      scale = Math.min(scaleX, scaleY) * 0.98;
-      
+      // Auto-fit diagram centered within viewport bounds
+      scale = Math.min(scaleX, scaleY);
       pointX = (rect.width - (VB_WIDTH * scale)) / 2;
-      pointY = (rect.height - (VB_HEIGHT * scale)) / 2 + 10;
+      pointY = (rect.height - (VB_HEIGHT * scale)) / 2;
       setTransform();
     }
 
