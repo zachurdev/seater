@@ -26,6 +26,15 @@
     font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   }
   main { width: min(100%, 760px); }
+  .page-nav { display: flex; margin-bottom: 14px; }
+  .back-link {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 9px 13px; border: 1px solid var(--seat-line); border-radius: 8px;
+    background: var(--seat); color: var(--text); font-size: 14px; font-weight: 600;
+    text-decoration: none;
+  }
+  .back-link:hover { background: var(--fixture); }
+  .back-link:focus-visible { outline: 2px solid var(--text); outline-offset: 3px; }
   .diagram { display: block; width: 100%; height: auto; }
   .room { fill: var(--room); stroke: #303943; stroke-width: 5; }
   .seat { fill: var(--seat); stroke: var(--seat-line); stroke-width: 3.4; }
@@ -49,11 +58,15 @@
     :root { color-scheme: light; --page: #fff; --room: #f4f6f8; --seat: #e5eaf0; --seat-line: #a6b0bc; --fixture: #e9edf1; --fixture-line: #8c96a3; --text: #1c2631; }
     body { background: #fff; padding: 0; }
     main { width: 100%; max-width: none; }
+    .page-nav { display: none; }
   }
 </style>
 </head>
 <body>
 <main aria-label="Seating layout diagram">
+  <nav class="page-nav" aria-label="Page navigation">
+    <a class="back-link" href="./index.html"><span aria-hidden="true">←</span> Return to search</a>
+  </nav>
   <svg class="diagram" viewBox="0 0 760 1320" role="img" aria-labelledby="diagram-title diagram-desc" xmlns="http://www.w3.org/2000/svg">
     <title id="diagram-title">Seating layout</title>
     <desc id="diagram-desc">Sixty numbered seats in two balanced groups, with a dance floor in the central aisle, an adjacent stage, and screens aligned with the stage on the right.</desc>
