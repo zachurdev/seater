@@ -48,7 +48,7 @@ function parseCSV(text) {
     if (lines.length === 0) return [];
     
     // Parse headers from the first line
-    const headers = lines[0].split(',').map(h => h.trim().replace(/^["']|["']$/g, ''));
+        const headers = lines[0].split(',').map(h => h.trim().replace(/^["']|["']$/g, '').toLowerCase());
     
     return lines.slice(1).map(line => {
         const values = [];
@@ -78,7 +78,7 @@ function parseCSV(text) {
         });
         
         return obj;
-    });
+    }).filter(obj => Object.values(obj).some(value => value !== ""));
 }
 
 /*
@@ -163,13 +163,14 @@ function getFilteredGuests() {
     const q = searchQuery.toLowerCase();
     if (!q) return guestData;
 
-    return guestData.filter(g => 
-        (g.name && g.name.toLowerCase().includes(q)) ||
-        (g.table && String(g.table).toLowerCase().includes(q)) ||
-        (g.tableName && g.tableName.toLowerCase().includes(q)) ||
-        (g.seat && g.seat.toLowerCase().includes(q)) ||
-        (g.notes && g.notes.toLowerCase().includes(q))
+    return guestData.filter(guest =>
+        [guest.rank, guest.name, guest.table, guest.seat]
+            .some(value => String(value || '').toLowerCase().includes(q))
     );
+}
+
+function getTableLabel(guest) {
+    return guest.table ? `Table ${guest.table}` : "Unassigned Table";
 }
 
 function highlightText(text, query) {
@@ -183,7 +184,7 @@ function render() {
     if (!guestData || guestData.length === 0) return;
 
     const guests = getFilteredGuests();
-    document.getElementById("statusCounter").innerHTML = `Showing <span class="text-gold-400 font-bold">${guests.length}</span> of <span>${guestData.length}</span> guests`;
+    document.getElementById("statusCounter").innerHTML = `Showing <span class="text-gold-400 font-bold">${guests.length}</span> of <span>${guestData.length}</span> seats`;
 
     const container = document.getElementById("contentContainer");
     const emptyState = document.getElementById("emptyState");
@@ -206,22 +207,20 @@ function render() {
 }
 
 function renderTableView(guests, container) {
-    const tableGroups = {};
+    const tableGroups = new Map();
     
-    guestData.forEach(g => {
-        const title = g.tableName || `Table ${g.table}`;
-        if (!tableGroups[title]) tableGroups[title] = [];
+    guestData.forEach(guest => {
+        const title = getTableLabel(guest);
+        if (!tableGroups.has(title)) tableGroups.set(title, []);
     });
 
-    guests.forEach(g => {
-        const title = g.tableName || `Table ${g.table}`;
-        if (tableGroups[title]) tableGroups[title].push(g);
+    guests.forEach(guest => {
+        tableGroups.get(getTableLabel(guest)).push(guest);
     });
 
     let html = `<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">`;
 
-    Object.keys(tableGroups).forEach(tableName => {
-        const tableGuests = tableGroups[tableName];
+    tableGroups.forEach((tableGuests, tableName) => {
         if (searchQuery && tableGuests.length === 0) return;
 
         html += `
@@ -239,16 +238,16 @@ function renderTableView(guests, container) {
                 <div class="space-y-1.5">
                     ${tableGuests.map(g => {
                         const isMatch = searchQuery && (
-                            (g.name && g.name.toLowerCase().includes(searchQuery.toLowerCase())) ||
-                            (g.notes && g.notes.toLowerCase().includes(searchQuery.toLowerCase()))
+                            [g.rank, g.name, g.table, g.seat]
+                                .some(value => String(value || '').toLowerCase().includes(searchQuery.toLowerCase()))
                         );
                         return `
                             <div class="p-2 rounded-lg flex items-center justify-between text-xs ${isMatch ? 'bg-gold-500/20 border border-gold-500/40 text-slate-100 font-semibold' : 'text-slate-300 hover:bg-slate-800/40'}">
                                 <div class="flex flex-col min-w-0 pr-2">
-                                    <span class="truncate">${highlightText(g.name, searchQuery)}</span>
-                                    ${g.notes ? `<span class="text-[10px] text-slate-400 truncate">${highlightText(g.notes, searchQuery)}</span>` : ''}
+                                    <span class="truncate">${highlightText(g.name || 'Unassigned', searchQuery)}</span>
+                                    <span class="text-[10px] text-slate-400 truncate">${highlightText(g.rank || '-', searchQuery)}</span>
                                 </div>
-                                <span class="px-2 py-0.5 bg-slate-800/80 text-slate-400 font-mono text-[11px] rounded border border-slate-700/50 shrink-0">${g.seat || 'Assigned'}</span>
+                                <span class="px-2 py-0.5 bg-slate-800/80 text-slate-400 font-mono text-[11px] rounded border border-slate-700/50 shrink-0">Seat ${highlightText(g.seat || '-', searchQuery)}</span>
                             </div>
                         `;
                     }).join('')}
@@ -262,7 +261,7 @@ function renderTableView(guests, container) {
 }
 
 function renderAlphaView(guests, container) {
-    const sorted = [...guests].sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+    const sorted = [...guests].sort((a, b) => (a.name || 'Unassigned').localeCompare(b.name || 'Unassigned'));
 
     let html = `
     <div class="glass-card rounded-xl overflow-hidden border border-slate-800">
@@ -270,26 +269,25 @@ function renderAlphaView(guests, container) {
         <table class="w-full text-left text-xs text-slate-300">
             <thead class="bg-slate-900/80 uppercase text-[10px] text-slate-400 tracking-wider font-semibold border-b border-slate-800">
             <tr>
-                <th class="py-3 px-4">Guest Name</th>
-                <th class="py-3 px-4">Assigned Table</th>
+                <th class="py-3 px-4">Name</th>
+                <th class="py-3 px-4">Table</th>
                 <th class="py-3 px-4">Seat</th>
-                <th class="py-3 px-4 text-right">Notes</th>
+                <th class="py-3 px-4 text-right">Rank</th>
             </tr>
             </thead>
             <tbody class="divide-y divide-slate-800/60">
             ${sorted.map(g => {
                 const isMatch = searchQuery && (
-                (g.name && g.name.toLowerCase().includes(searchQuery.toLowerCase())) ||
-                (g.tableName && g.tableName.toLowerCase().includes(searchQuery.toLowerCase())) ||
-                (g.table && String(g.table).toLowerCase().includes(searchQuery.toLowerCase()))
+                [g.rank, g.name, g.table, g.seat]
+                    .some(value => String(value || '').toLowerCase().includes(searchQuery.toLowerCase()))
                 );
-                const tableTitle = g.tableName || `Table ${g.table}`;
+                const tableTitle = getTableLabel(g);
                 return `
                 <tr class="transition-colors ${isMatch ? 'bg-gold-500/10 font-semibold text-slate-100' : 'hover:bg-slate-800/30'}">
-                    <td class="py-3 px-4 font-medium">${highlightText(g.name, searchQuery)}</td>
+                    <td class="py-3 px-4 font-medium">${highlightText(g.name || 'Unassigned', searchQuery)}</td>
                     <td class="py-3 px-4 text-gold-400">${highlightText(tableTitle, searchQuery)}</td>
-                    <td class="py-3 px-4 font-mono text-slate-400">${g.seat || 'Assigned'}</td>
-                    <td class="py-3 px-4 text-right text-slate-400 text-[11px]">${highlightText(g.notes || '-', searchQuery)}</td>
+                    <td class="py-3 px-4 font-mono text-slate-400">${highlightText(g.seat || '-', searchQuery)}</td>
+                    <td class="py-3 px-4 text-right text-slate-400 text-[11px]">${highlightText(g.rank || '-', searchQuery)}</td>
                 </tr>
                 `;
             }).join('')}
