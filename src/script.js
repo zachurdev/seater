@@ -211,7 +211,6 @@ function renderTableView(guests, container) {
                     </div>
                     <div class="flex-1 min-w-0">
                         <h3 class="font-serif font-bold text-slate-100 text-base truncate">${tableName}</h3>
-                        <span class="text-[11px] text-slate-400">${tableGuests.length} Guests Seated</span>
                     </div>
                 </div>
 
