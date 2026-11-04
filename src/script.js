@@ -1,6 +1,5 @@
 let guestData = [];
 let searchQuery = "";
-let displayMode = "table"; // 'table' or 'alpha'
 
 /*
 window.addEventListener("DOMContentLoaded", () => {
@@ -144,21 +143,6 @@ function clearSearch() {
     render();
 }
 
-function setDisplayMode(mode) {
-    displayMode = mode;
-    const btnTable = document.getElementById("viewBtnTable");
-    const btnAlpha = document.getElementById("viewBtnAlpha");
-
-    if (mode === "table") {
-        btnTable.className = "px-3 py-1.5 text-xs font-semibold rounded-md transition-all flex items-center gap-1.5 bg-gold-500 text-navy-950 shadow";
-        btnAlpha.className = "px-3 py-1.5 text-xs font-medium rounded-md text-slate-400 hover:text-slate-200 transition-all flex items-center gap-1.5";
-    } else {
-        btnAlpha.className = "px-3 py-1.5 text-xs font-semibold rounded-md transition-all flex items-center gap-1.5 bg-gold-500 text-navy-950 shadow";
-        btnTable.className = "px-3 py-1.5 text-xs font-medium rounded-md text-slate-400 hover:text-slate-200 transition-all flex items-center gap-1.5";
-    }
-    render();
-}
-
 function getFilteredGuests() {
     const q = searchQuery.toLowerCase();
     if (!q) return guestData;
@@ -197,11 +181,7 @@ function render() {
         emptyState.classList.add("hidden");
     }
 
-    if (displayMode === "table") {
-        renderTableView(guests, container);
-    } else {
-        renderAlphaView(guests, container);
-    }
+    renderTableView(guests, container);
 
     if (window.lucide) lucide.createIcons();
 }
@@ -260,47 +240,6 @@ function renderTableView(guests, container) {
     container.innerHTML = html;
 }
 
-function renderAlphaView(guests, container) {
-    const sorted = [...guests].sort((a, b) => (a.name || 'Unassigned').localeCompare(b.name || 'Unassigned'));
-
-    let html = `
-    <div class="glass-card rounded-xl overflow-hidden border border-slate-800">
-        <div class="overflow-x-auto">
-        <table class="w-full text-left text-xs text-slate-300">
-            <thead class="bg-slate-900/80 uppercase text-[10px] text-slate-400 tracking-wider font-semibold border-b border-slate-800">
-            <tr>
-                <th class="py-3 px-4">Name</th>
-                <th class="py-3 px-4">Table</th>
-                <th class="py-3 px-4">Seat</th>
-                <th class="py-3 px-4 text-right">Rank</th>
-            </tr>
-            </thead>
-            <tbody class="divide-y divide-slate-800/60">
-            ${sorted.map(g => {
-                const isMatch = searchQuery && (
-                [g.rank, g.name, g.table, g.seat]
-                    .some(value => String(value || '').toLowerCase().includes(searchQuery.toLowerCase()))
-                );
-                const tableTitle = getTableLabel(g);
-                return `
-                <tr class="transition-colors ${isMatch ? 'bg-gold-500/10 font-semibold text-slate-100' : 'hover:bg-slate-800/30'}">
-                    <td class="py-3 px-4 font-medium">${highlightText(g.name || 'Unassigned', searchQuery)}</td>
-                    <td class="py-3 px-4 text-gold-400">${highlightText(tableTitle, searchQuery)}</td>
-                    <td class="py-3 px-4 font-mono text-slate-400">${highlightText(g.seat || '-', searchQuery)}</td>
-                    <td class="py-3 px-4 text-right text-slate-400 text-[11px]">${highlightText(g.rank || '-', searchQuery)}</td>
-                </tr>
-                `;
-            }).join('')}
-            </tbody>
-        </table>
-        </div>
-    </div>
-    `;
-
-    container.innerHTML = html;
-}
-
 // Expose functions globally so HTML onclick attributes can access them from the module
-window.setDisplayMode = setDisplayMode;
 window.handleSearchInput = handleSearchInput;
 window.clearSearch = clearSearch;
